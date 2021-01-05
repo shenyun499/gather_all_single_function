@@ -16,7 +16,8 @@ import java.util.Scanner;
  * 限制：
  * 2 <= n <= 100000
  * 思路1：用容器，放入就检查容器是否存在。如，set集合，存在则返回false。空间复杂度O(n)，时间复杂度O(n)
- * 思路2：
+ * 思路2：排序
+ * 思路3：临时数组，计数算法
  *
  * @author ：HUANG ZHI XUE
  * @date ：Create in 2021-01-04
@@ -35,6 +36,19 @@ public class Offer03 {
             hashSet.add(nextInt);
         }
         System.out.println(sign);
+    }
+
+    public int findRepeatNumber(int[] nums) {
+        // 临时数组
+        int[] arr = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            // 将数组元素当作下标索引放入新数组中，放一次新数组值就加1，如果里面的值为2则返回重复值
+            arr[nums[i]]++;
+            if (arr[nums[i]] > 1) {
+                return nums[i];
+            }
+        }
+        return 0;
     }
 
 }

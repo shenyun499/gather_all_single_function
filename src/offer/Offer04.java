@@ -22,15 +22,28 @@ package offer;
  * 0 <= n <= 1000
  * 0 <= m <= 1000
  *
+ * 思路：从左下角开始，如果target > 它，则列数j+1，小于则行数i-1，否则相等返回true
  * @author ：HUANG ZHI XUE
  * @date ：Create in 2021-01-05
  */
 public class Offer04 {
     public static void main(String[] args) {
-
     }
 
     public boolean findNumberIn2DArray(int[][] matrix, int target) {
+        // 定位初始值
+        int i = matrix.length - 1, j = 0;
+        for (; i >= 0 && j <= matrix[0].length - 1;) {
+            // target大，则列数+1
+            if (target > matrix[i][j]) {
+                j++;
+            } else if (target < matrix[i][j]) {
+                // target小，则行数-1
+                i--;
+            } else {
+                return true;
+            }
+        }
         return false;
     }
 }

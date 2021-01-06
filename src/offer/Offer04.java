@@ -23,6 +23,7 @@ package offer;
  * 0 <= m <= 1000
  *
  * 思路：从左下角开始，如果target > 它，则列数j+1，小于则行数i-1，否则相等返回true
+ * 时间复杂度为O(i*j) 空间复杂度为O(1)
  * @author ：HUANG ZHI XUE
  * @date ：Create in 2021-01-05
  */

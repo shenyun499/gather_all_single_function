@@ -35,11 +35,3 @@ public class Offer06 {
         return arr;
     }
 }
-
-
-
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) { val = x; }
-}

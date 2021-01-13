@@ -40,7 +40,7 @@ public class Offer09 {
     }
 
     public int deleteHead() {
-        // 当第二个栈为空时，将第一个栈出栈放入第二个栈，相等于队列
+        // 当第二个栈为空时，将第一个栈出栈放入第二个栈，相等于队列(易错，必须是第二个栈为空才)
         if (stack2.isEmpty()) {
             while (!stack1.isEmpty()) {
                 stack2.push(stack1.pop());

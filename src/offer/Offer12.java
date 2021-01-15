@@ -26,17 +26,41 @@ import java.util.Set;
  * 1 <= board[i].length <= 200
  *
  * 思路1：采用深度优先遍历-递归
+ * 已经填充的改变其元素，递归结束改回来   board[i][j]='/0'-----递归------board[i][j]=works[k]
+ * 递归结束条件：1、越界和不相等 false，长度到达了words  true
  *
  * @author ：HUANG ZHI XUE
  * @date ：Create in 2021-01-13
  */
 public class Offer12 {
     public boolean exist(char[][] board, String word) {
-        Set<Character> cSet = new HashSet<>();
-        cSet.add(board[0][0]);
-        for (int i = 0, j = 0; i > board.length && j > board[0].length;) {
-            //dnf(cSet, );
+        char[] words = word.toCharArray();
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (dfs(board, words, i, j, 0)) {
+                    return true;
+                }
+            }
         }
         return false;
+    }
+
+    private boolean dfs(char[][] board, char[] words, int i, int j, int k) {
+        // 递归结束条件 不满足
+        if (i < 0 || i > board.length - 1 || j < 0 || j > board[0].length - 1 || words[k] != board[i][j]) {
+            return false;
+        }
+        // 满足
+        if (words.length - 1 == k) {
+            return true;
+        }
+        // 先改变元素
+        board[i][j] = '\0';
+        // 递归函数
+        boolean bol = dfs(board, words, i + 1, j, k + 1) || dfs(board, words, i - 1, j, k + 1)
+                || dfs(board, words, i, j + 1, k + 1) || dfs(board, words, i, j - 1, k + 1);
+        // 元素改回，能到这一步，肯定words[k] == board[i][j]的
+        board[i][j] = words[k];
+        return bol;
     }
 }

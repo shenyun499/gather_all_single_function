@@ -1,4 +1,4 @@
-package readfile;
+package file.readfile;
 
 import org.junit.Test;
 

@@ -6,28 +6,18 @@ import com.arithmetic.hash.StudentInfo;
 import java.util.Arrays;
 
 /**
- * @Description
- * 测试
+ * @Description 测试
  * @Author xuexue
  * @Date 2019/5/3016:53
  */
 public class Test {
 
-    public static void main(String[] args) {
-        int[] arr = new int[]{2, 4, 1, 8, 5, 9, 0};
-        Test test = new Test();
-        test.insertSort(arr);
-        System.out.println(Arrays.toString(arr));
-
-        System.out.println(System.getProperty("os.arch"));
-
-    }
 
     public void test() {
-        StudentInfo studentInfo1 = new StudentInfo("zhangsan",10);
-        StudentInfo studentInfo2 = new StudentInfo("lisi",20);
-        StudentInfo studentInfo3 = new StudentInfo("wangwu",5);
-        StudentInfo studentInfo4 = new StudentInfo("zhaoliu",40);
+        StudentInfo studentInfo1 = new StudentInfo("zhangsan", 10);
+        StudentInfo studentInfo2 = new StudentInfo("lisi", 20);
+        StudentInfo studentInfo3 = new StudentInfo("wangwu", 5);
+        StudentInfo studentInfo4 = new StudentInfo("zhaoliu", 40);
 
         HashTable hashTable = new HashTable();
         hashTable.put(studentInfo1);
@@ -108,5 +98,59 @@ public class Test {
                 arr[j + 1] = num;
             }
         }
+    }
+
+    public void dubbleSort(int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = 0; j < arr.length - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    // 交换位置
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    public void chooseSort2(int[] arr) {
+        // 选择一个最小的索引，进行比较，每次记录最小索引位置
+        int minIndex = 0;
+        for (int i = 0; i < arr.length - 1; i++) {
+            minIndex = i;
+            for (int j = i + 1; j < arr.length; j++) {
+                minIndex = arr[minIndex] > arr[j] ? j : minIndex;
+            }
+            if (minIndex != i) {
+                int temp = arr[i];
+                arr[i] = arr[minIndex];
+                arr[minIndex] = temp;
+            }
+        }
+    }
+
+    public void insertSort2(int[] arr) {
+        // 选择一个插入的数，往前判断
+        int chooseNum;
+        int prefixI;
+        for (int i = 1; i < arr.length; i++) {
+            chooseNum = arr[i];
+            prefixI = i - 1;
+            while (prefixI >= 0 && chooseNum < arr[prefixI]) {
+                arr[prefixI + 1] = arr[prefixI];
+                prefixI--;
+            }
+            arr[prefixI + 1] = chooseNum;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = new int[]{2, 4, 1, 8, 5, 9, 0};
+        Test test = new Test();
+        test.insertSort2(arr);
+        System.out.println(Arrays.toString(arr));
+
+        System.out.println(System.getProperty("os.arch"));
+
     }
 }

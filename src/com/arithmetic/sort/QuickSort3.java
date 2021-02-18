@@ -43,7 +43,7 @@ public class QuickSort3 {
     }
 
     /**
-     * 分治（单边循环）
+     * 分治（双边循环）
      * 移动数组元素位置，计算每次的pivot的位置
      * @param arr
      * @param startIndex

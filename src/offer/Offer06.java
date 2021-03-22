@@ -26,6 +26,7 @@ public class Offer06 {
             size++;
         }
 
+
         int[] arr = new int[size];
         // 第二次遍历将值填入数组
         while (head != null) {

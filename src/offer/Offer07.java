@@ -40,6 +40,7 @@ public class Offer07 {
         // 将中序遍历的值作为key，将索引作为value，方便快速定位索引
         for (int i = 0; i < inorder.length; i++) {
             map.put(inorder[i], i);
+
         }
         // 调用递归函数
         return buildTree(preorder, inorder, 0, preorder.length - 1, 0, inorder.length - 1);

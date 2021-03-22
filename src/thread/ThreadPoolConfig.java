@@ -6,7 +6,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 线程池配置
@@ -18,17 +20,17 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 @Component
 public class ThreadPoolConfig {
+    /**
+     * 线程池名称
+     */
     private static final String TASK_THREADPOOL_NAME = "task_threadpool_test";
 
     /**
-     * 注入到容器中，因为ThreadPoolTaskExecutor继承了ExecutorConfigurationSupport，ExecutorConfigurationSupport实现了InitializingBean
-     * 实现了afterPropertiesSet方法，方法里调用了initialize()
-     * 最后调了initializeExecutor(this.threadFactory, this.rejectedExecutionHandler)自动初始化
-     * @return
+     * 线程池配置
+     * @return 线程池
      */
     @Bean(TASK_THREADPOOL_NAME)
-    public Executor asyncThreadPoolExecutor() {
-
+    public Executor asyncThreadPoolExecutor1() {
         // 获得运行机器 逻辑处理器核数（其实就是线程数）
         Integer availibleNum = Runtime.getRuntime().availableProcessors();
         // 内部还是使用了ThreadPoolExecutor，只是参数配置更加方便
@@ -52,8 +54,7 @@ public class ThreadPoolConfig {
      * 自己new的，不会自己初始化，需要调用initialize才能用，否则报错
      * java.lang.IllegalStateException: ThreadPoolTaskExecutor not initialized
      */
-    @Test
-    public void te() {
+    public static ThreadPoolTaskExecutor asyncThreadPoolExecutor() {
         // 获得运行机器 逻辑处理器核数（其实就是线程数）
         Integer availibleNum = Runtime.getRuntime().availableProcessors();
         // 内部还是使用了ThreadPoolExecutor，只是参数配置更加方便
@@ -70,6 +71,17 @@ public class ThreadPoolConfig {
         executor.setThreadNamePrefix(TASK_THREADPOOL_NAME);
         // 配置拒绝策略，CallerRunsPolicy：当拒绝时由调用线程处理该任务
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        // 不用bean注入方法，需要自己初始化线程池
         executor.initialize();
+        return executor;
     }
+
+    public static void main(String[] args) {
+        Integer availibleNum = Runtime.getRuntime().availableProcessors();
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(availibleNum, availibleNum * 2, 60L,
+                TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(100));
+
+
+    }
+
 }

@@ -1,6 +1,8 @@
 package thread;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class ThreadPoolConfig {
+
+    private final static Logger logger = LoggerFactory.getLogger(ThreadPoolConfig.class);
     /**
      * 线程池名称
      */
@@ -57,12 +61,13 @@ public class ThreadPoolConfig {
     public static ThreadPoolTaskExecutor asyncThreadPoolExecutor() {
         // 获得运行机器 逻辑处理器核数（其实就是线程数）
         Integer availibleNum = Runtime.getRuntime().availableProcessors();
+        availibleNum = 0;
         // 内部还是使用了ThreadPoolExecutor，只是参数配置更加方便
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         // 核心参数
         executor.setCorePoolSize(availibleNum);
         // 配置最大线程数
-        executor.setMaxPoolSize(availibleNum * 2);
+        executor.setMaxPoolSize(1);
         // 配置队列容量 队列：不配置容量，用SynchronousQueue，配置用LinkedBlockingQueue。 (BlockingQueue)(queueCapacity > 0 ? new LinkedBlockingQueue(queueCapacity) : new SynchronousQueue());
         executor.setQueueCapacity(100);
         // 配置非核心线程超时释放时间（核心线程默认不允许回收）
@@ -77,10 +82,11 @@ public class ThreadPoolConfig {
     }
 
     public static void main(String[] args) {
-        Integer availibleNum = Runtime.getRuntime().availableProcessors();
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(availibleNum, availibleNum * 2, 60L,
-                TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(100));
+//        Integer availibleNum = Runtime.getRuntime().availableProcessors();
+//        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(availibleNum, availibleNum * 2, 60L,
+//                TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(100));
 
+        asyncThreadPoolExecutor();
 
     }
 

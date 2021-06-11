@@ -5,8 +5,8 @@
  * @date ：Create in 2020-10-24
  */
 
-import java.util.ArrayList;
-import java.util.Random;
+import util.ArrayList;
+import util.Random;
 public class GA {
 /*
 在这里采用无符号二进制整数来表示。x1,x2的取值范围为0到10,，

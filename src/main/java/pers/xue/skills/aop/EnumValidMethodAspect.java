@@ -12,11 +12,11 @@ import pers.xue.skills.config.EnumValidAOP;
 @Aspect
 public class EnumValidMethodAspect {
     @Pointcut(value = "@annotation(pers.xue.skills.config.EnumValidAOP)")
-    public void access() {
+    public void pointcut() {
         System.out.println("access");
     }
 
-    @Before("access()")
+    @Before("pointcut()")
     public void before() {
         System.out.println("before...");
     }

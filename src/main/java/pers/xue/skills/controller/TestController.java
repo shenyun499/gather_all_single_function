@@ -11,7 +11,6 @@ import javax.validation.Valid;
 @RestController
 public class TestController {
 
-    @EnumValidAOP
     @PostMapping("/validEnumParam")
     public Object validEnumParam(@Valid @RequestBody ReqDTO reqDTO) {
         // ...

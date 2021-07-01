@@ -2,7 +2,7 @@ package pers.xue.skills.controller;
 
 import org.junit.Test;
 
-public class TestControllerTestTest {
+public class TestControllerTestEnumValid {
     @Test
     public void testTestValidEnumParam() {
         // TODO: This test is incomplete.
@@ -12,7 +12,7 @@ public class TestControllerTestTest {
         //   types.
         //   See https://diff.blue/R003
 
-        (new TestControllerTest()).testValidEnumParam();
+        (new TestControllerEnumValid()).testValidEnumParam();
     }
 }
 

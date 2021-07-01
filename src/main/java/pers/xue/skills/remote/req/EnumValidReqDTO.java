@@ -1,4 +1,4 @@
-package pers.xue.skills.remote;
+package pers.xue.skills.remote.req;
 
 import pers.xue.skills.config.EnumValid;
 import pers.xue.skills.config.EnumValidAOP;
@@ -6,7 +6,10 @@ import pers.xue.skills.enums.NameTypeEnum;
 
 import javax.validation.constraints.Max;
 
-public class ReqDTO {
+/**
+ * 枚举校验Req DTO
+ */
+public class EnumValidReqDTO {
 
     @EnumValidAOP(NameTypeEnum.class)
     @EnumValid(NameTypeEnum.class)

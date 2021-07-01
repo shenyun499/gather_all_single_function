@@ -1,14 +1,13 @@
 package pers.xue.skills.controller;
 
 import org.junit.Test;
-import pers.xue.skills.remote.ReqDTO;
 
 import static org.junit.Assert.assertNull;
 
-public class TestControllerTest {
+public class TestControllerEnumValid {
     @Test
     public void testValidEnumParam() {
-        TestController testController = new TestController();
+        EnumValidController enumValidController = new EnumValidController();
         //assertNull(testController.validEnumParam(new ReqDTO()));
     }
 }

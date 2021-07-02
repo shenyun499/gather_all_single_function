@@ -25,4 +25,12 @@ public class EnumValidReqDTO {
     public void setNameType(String nameType) {
         this.nameType = nameType;
     }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
 }

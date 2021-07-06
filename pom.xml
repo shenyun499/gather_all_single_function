@@ -55,6 +55,13 @@
       <scope>runtime</scope>
     </dependency>-->
 
+    <!-- 对象头操作依赖 -->
+    <dependency>
+      <groupId>org.openjdk.jol</groupId>
+      <artifactId>jol-core</artifactId>
+      <version>0.8</version>
+    </dependency>
+
   </dependencies>
 
   <!-- h2 -->

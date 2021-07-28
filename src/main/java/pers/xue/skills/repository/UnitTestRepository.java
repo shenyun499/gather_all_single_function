@@ -2,7 +2,7 @@ package pers.xue.skills.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import pers.xue.skills.entity.JpaTest;
+import pers.xue.skills.entity.UnitTestEntity;
 
 /**
  * @auther huangzhixue
@@ -10,7 +10,7 @@ import pers.xue.skills.entity.JpaTest;
  * @Description
  */
 @Repository
-public interface JpaTestRepository extends CrudRepository<JpaTest, Integer> {
+public interface UnitTestRepository extends CrudRepository<UnitTestEntity, Integer> {
 
-    JpaTest findByContent(String content);
+    UnitTestEntity findByContent(String content);
 }

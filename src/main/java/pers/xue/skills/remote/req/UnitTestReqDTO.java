@@ -11,13 +11,23 @@ import java.time.LocalDateTime;
  */
 public class UnitTestReqDTO {
 
-    private LocalDateTime content;
+    private Integer id;
 
-    public LocalDateTime getContent() {
+    private String content;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getContent() {
         return content;
     }
 
-    public void setContent(LocalDateTime content) {
+    public void setContent(String content) {
         this.content = content;
     }
 }

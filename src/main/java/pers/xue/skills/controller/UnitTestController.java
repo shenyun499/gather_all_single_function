@@ -1,10 +1,14 @@
 package pers.xue.skills.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import pers.xue.skills.entity.UnitTestEntity;
 import pers.xue.skills.remote.req.UnitTestReqDTO;
 import pers.xue.skills.remote.rsp.UnitTestRspDTO;
+import pers.xue.skills.service.UnitTestService;
 
 /**
  * @auther huangzhixue
@@ -13,11 +17,15 @@ import pers.xue.skills.remote.rsp.UnitTestRspDTO;
  */
 @RestController
 public class UnitTestController {
+    @Autowired
+    private UnitTestService unitTestService;
 
     @PostMapping("/unitTest")
-    public UnitTestRspDTO date(@RequestBody UnitTestReqDTO unitTestReqDTO) {
+    public UnitTestRspDTO unitTest(@RequestBody UnitTestReqDTO unitTestReqDTO) {
+        UnitTestEntity unitTestEntity = unitTestService.queryUnitTestByContent(new UnitTestEntity(unitTestReqDTO.getId(), unitTestReqDTO.getContent()));
         UnitTestRspDTO unitTestRspDTO = new UnitTestRspDTO();
-        unitTestRspDTO.setId(1);
+        unitTestRspDTO.setId(unitTestEntity.getId());
+        unitTestEntity.setContent(unitTestEntity.getContent());
         return unitTestRspDTO;
     }
 }

@@ -62,4 +62,52 @@
       </activation>
     </profile>
   </profiles>
+
+  <build>
+    <finalName>unit test</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.5</version>
+        <configuration>
+          <excludes>
+            <!-- 不参与unit test -->
+            <exclude>**/*App*</exclude>
+            <exclude>**/jackson/**</exclude>
+            <exclude>**/remote/**</exclude>
+            <exclude>**/entity/**</exclude>
+          </excludes>
+        </configuration>
+
+        <!-- 配置路径，生成report等-->
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>post-unit-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <dataFile>target/jacoco.exec</dataFile>
+              <outputDirectory>target/jacoco-ut</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

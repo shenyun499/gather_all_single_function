@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import pers.xue.skills.entity.UnitTestEntity;
 import pers.xue.skills.repository.UnitTestRepository;
 

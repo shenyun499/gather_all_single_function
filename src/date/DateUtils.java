@@ -1,5 +1,7 @@
 package date;
 
+import org.junit.Test;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
@@ -56,6 +58,16 @@ public class DateUtils {
         // 转回LocalDateTime
         DateTimeFormatter df = DateTimeFormatter.ofPattern(formatType);
         return LocalDateTime.parse(sdf.format(calendar.getTime()), df);
+    }
+
+    /**
+     * 一年中的第几周，jdk7 api
+     */
+    @Test
+    public void getWeekOfYear() {
+        Calendar instance = Calendar.getInstance();
+        int i = instance.get(Calendar.WEEK_OF_YEAR);
+        System.out.println(i);
     }
 
     /**

@@ -1,6 +1,16 @@
-package pers.xue.skills.remote.rsp;
+package pers.xue.skills.remote.req;
 
-public class UnitTestRspDTO {
+
+import java.time.LocalDateTime;
+
+/**
+ * @auther huangzhixue
+ * @data 2021/6/29 3:10 下午
+ * @Description
+ * 对请求参数时间处理 ReqDTO
+ */
+public class CaseReqDTO {
+
     private Integer id;
 
     private String content;

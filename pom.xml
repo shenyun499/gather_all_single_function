@@ -81,6 +81,12 @@
       <version>0.8</version>
     </dependency>
 
+    <!-- jedis -->
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>2.7.1</version><!--版本号可根据实际情况填写-->
+    </dependency>
   </dependencies>
 
   <!-- h2 -->

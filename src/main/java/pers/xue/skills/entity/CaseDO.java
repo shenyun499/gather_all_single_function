@@ -9,7 +9,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "case")
-public class CaseEntity {
+public class CaseDO {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;

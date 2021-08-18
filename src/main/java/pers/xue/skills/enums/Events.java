@@ -8,18 +8,23 @@ package pers.xue.skills.enums;
  */
 public enum Events {
     /** start 启动线程 */
-    START,
+    START("start"),
 
     /** wait无参方法 */
-    WAIT_NO_PARAM,
+    WAIT_NO_PARAM("wait_no_param"),
 
     /** wait有参方法 */
-    WAIT_PARAM,
+    WAIT_PARAM("wait_param"),
+
+    /** 进入sync同步方法/代码 */
+    ENTER_SYNC("enter_sync"),
 
     /** 通知唤醒 */
-    NOTIFY,
+    NOTIFY("notify"),
 
     /** run方法结束 */
-    RUN_END;
+    RUN_END("run_end");
 
+    private String event;
+    Events(String event) {this.event = event;}
 }

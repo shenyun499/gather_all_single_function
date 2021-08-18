@@ -7,20 +7,20 @@ import java.time.LocalDateTime;
  * @auther huangzhixue
  * @data 2021/6/29 3:10 下午
  * @Description
- * 对请求参数时间处理 ReqDTO
+ * 状态机创建请求参数
  */
-public class CaseReqDTO {
+public class CaseCreateReqDTO {
 
-    private Integer id;
+    private String name;
 
     private String content;
 
-    public Integer getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getContent() {
@@ -30,4 +30,5 @@ public class CaseReqDTO {
     public void setContent(String content) {
         this.content = content;
     }
+
 }

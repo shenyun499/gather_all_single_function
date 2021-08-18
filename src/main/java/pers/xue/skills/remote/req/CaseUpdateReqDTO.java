@@ -1,13 +1,21 @@
-package pers.xue.skills.remote.rsp;
+package pers.xue.skills.remote.req;
 
-public class CaseRspDTO {
+/**
+ * @author huangzhixue
+ * @date 2021/8/17 2:51 下午
+ * @Description
+ * 状态机更新请求参数
+ */
+public class CaseUpdateReqDTO {
     private Integer id;
-
-    private String status;
 
     private String name;
 
     private String content;
+
+    private String status;
+
+    private String event;
 
     public Integer getId() {
         return id;
@@ -15,6 +23,14 @@ public class CaseRspDTO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getContent() {
@@ -33,11 +49,11 @@ public class CaseRspDTO {
         this.status = status;
     }
 
-    public String getName() {
-        return name;
+    public String getEvent() {
+        return event;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEvent(String event) {
+        this.event = event;
     }
 }

@@ -14,7 +14,8 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.5.2</version>
+    <version>2.2.13.RELEASE</version>
+    <relativePath/>
   </parent>
 
   <dependencies>
@@ -40,10 +41,16 @@
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
 
+    <!-- statemachine -->
     <dependency>
       <groupId>org.springframework.statemachine</groupId>
       <artifactId>spring-statemachine-starter</artifactId>
       <version>2.4.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.statemachine</groupId>
+      <artifactId>spring-statemachine-data-jpa</artifactId>
+      <version>3.0.0</version>
     </dependency>
 
 

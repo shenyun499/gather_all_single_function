@@ -9,20 +9,25 @@ package pers.xue.skills.enums;
  */
 public enum States {
     /** 新建状态 */
-    NEW,
+    NEW("new"),
 
     /** 运行状态 */
-    RUNNABLE,
+    RUNNABLE("runnable"),
 
     /** 等待状态 */
-    WAITING,
+    WAITING("waiting"),
 
     /** 计时等待 */
-    TIMEDWAIT,
+    TIMED_WAITING("timed_waiting"),
 
     /** 阻塞状态 */
-    BLOCKED,
+    BLOCKED("blocked"),
 
     /** 终止状态 */
-    TERMINATED;
+    TERMINATED("terminated");
+
+    private String state;
+    States(String state) {
+        this.state = state;
+    }
 }

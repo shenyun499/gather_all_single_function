@@ -2,7 +2,7 @@ package pers.xue.skills.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import pers.xue.skills.entity.CaseEntity;
+import pers.xue.skills.entity.CaseDO;
 
 /**
  * @author huangzhixue
@@ -10,7 +10,7 @@ import pers.xue.skills.entity.CaseEntity;
  * @Description
  */
 @Repository
-public interface CaseRepository extends CrudRepository<CaseEntity, Integer> {
+public interface CaseRepository extends CrudRepository<CaseDO, Integer> {
 
-    CaseEntity findByContent(String content);
+    CaseDO findByContent(String content);
 }

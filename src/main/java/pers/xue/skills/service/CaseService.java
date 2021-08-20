@@ -16,9 +16,12 @@ import pers.xue.skills.enums.Events;
 import pers.xue.skills.enums.States;
 import pers.xue.skills.remote.req.CaseCreateReqDTO;
 import pers.xue.skills.remote.req.CaseUpdateReqDTO;
+import pers.xue.skills.remote.rsp.CaseListRspDTO;
 import pers.xue.skills.remote.rsp.CaseRspDTO;
 import pers.xue.skills.repository.CaseRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -40,14 +43,31 @@ public class CaseService {
     @Autowired
     private StateMachineServiceConfig stateMachineServiceConfig;
 
-    //private StateMachine<States, Events> currentStateMachine;
-
-
     @Autowired
     private CaseRepository caseRepository;
 
-    public CaseDO queryUnitTestByContent(CaseDO caseDO) {
-        return caseRepository.findByContent(caseDO.getContent());
+    public ResponseEntity<CaseListRspDTO> list() {
+        Iterable<CaseDO> repositoryAll = caseRepository.findAll();
+        CaseListRspDTO caseListRspDTO = new CaseListRspDTO();
+        List<CaseRspDTO> caseRspDTOList = new ArrayList<>();
+        for (CaseDO caseDO : repositoryAll) {
+            CaseRspDTO caseRspDTO = new CaseRspDTO();
+            BeanUtils.copyProperties(caseDO, caseRspDTO);
+            caseRspDTOList.add(caseRspDTO);
+        }
+        caseListRspDTO.setCaseRspDTOList(caseRspDTOList);
+        return ResponseEntity.ok(caseListRspDTO);
+    }
+
+    public ResponseEntity<CaseRspDTO> query(Integer id) {
+        Assert.notNull(id, "id field is not null");
+        CaseDO caseDO = caseRepository.findById(id).orElse(null);
+        CaseRspDTO caseRspDTO = null;
+        if (!ObjectUtils.isEmpty(caseDO)) {
+            caseRspDTO = new CaseRspDTO();
+            BeanUtils.copyProperties(caseDO, caseRspDTO);
+        }
+        return ResponseEntity.ok(caseRspDTO);
     }
 
     public ResponseEntity<CaseRspDTO> create(CaseCreateReqDTO caseCreateReqDTO) {
@@ -86,16 +106,13 @@ public class CaseService {
         return ResponseEntity.ok(caseRspDTO);
     }
 
-/*    private synchronized StateMachine<States, Events> getStateMachine(String machineId) throws Exception {
-        if (currentStateMachine == null) {
-            currentStateMachine = stateMachineService.acquireStateMachine(machineId);
-            currentStateMachine.start();
-        } else if (!ObjectUtils.nullSafeEquals(currentStateMachine.getId(), machineId)) {
-            stateMachineService.releaseStateMachine(currentStateMachine.getId());
-            currentStateMachine.stop();
-            currentStateMachine = stateMachineService.acquireStateMachine(machineId);
-            currentStateMachine.start();
+    public ResponseEntity<CaseRspDTO> delete(Integer id) {
+        boolean existsById = caseRepository.existsById(id);
+        if (!existsById) {
+            logger.error("case id : {} is not exists，delete fail!", id);
+            throw new RuntimeException("record is not exists，delete fail!");
         }
-        return currentStateMachine;
-    }*/
+        caseRepository.deleteById(id);
+        return ResponseEntity.ok(new CaseRspDTO());
+    }
 }

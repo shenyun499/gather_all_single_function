@@ -5,10 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pers.xue.skills.remote.req.CaseCreateReqDTO;
 import pers.xue.skills.remote.req.CaseUpdateReqDTO;
+import pers.xue.skills.remote.rsp.CaseListRspDTO;
 import pers.xue.skills.remote.rsp.CaseRspDTO;
 import pers.xue.skills.service.CaseService;
-
-import javax.persistence.criteria.CriteriaBuilder;
 
 /**
  * @author huangzhixue
@@ -24,13 +23,13 @@ public class CaseController {
     private CaseService caseService;
 
     @GetMapping("/")
-    public ResponseEntity<CaseRspDTO> list() {
-        return null;
+    public ResponseEntity<CaseListRspDTO> list() {
+        return caseService.list();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CaseRspDTO> query(@PathVariable("id") Integer id) {
-        return null;
+        return caseService.query(id);
     }
 
     @PostMapping("/")
@@ -44,7 +43,7 @@ public class CaseController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CaseRspDTO> delete(@PathVariable("id") String id) {
-        return null;
+    public ResponseEntity<CaseRspDTO> delete(@PathVariable("id") Integer id) {
+        return caseService.delete(id);
     }
 }

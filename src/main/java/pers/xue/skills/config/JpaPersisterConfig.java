@@ -14,14 +14,12 @@ import pers.xue.skills.enums.States;
  * @Description
  */
 @Configuration
-//@Profile("jpa")
-//@Order(0)
 public class JpaPersisterConfig {
 
     /**
      * 提供存储服务 bean
-     * @param jpaStateMachineRepository
-     * @return
+     * @param jpaStateMachineRepository jpa_statemachine操作
+     * @return JpaPersistingStateMachineInterceptor
      */
     @Bean
     public StateMachineRuntimePersister<States, Events, String> stateMachineRuntimePersister(

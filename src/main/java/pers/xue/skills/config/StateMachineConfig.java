@@ -17,6 +17,7 @@ import org.springframework.statemachine.persist.StateMachineRuntimePersister;
 import org.springframework.statemachine.service.DefaultStateMachineService;
 import org.springframework.statemachine.service.StateMachineService;
 import org.springframework.statemachine.state.State;
+import org.springframework.util.ObjectUtils;
 import pers.xue.skills.enums.Events;
 import pers.xue.skills.enums.States;
 
@@ -108,6 +109,10 @@ public class StateMachineConfig
         return new StateMachineListenerAdapter<States, Events>() {
             @Override
             public void stateChanged(State<States, Events> from, State<States, Events> to) {
+                if (ObjectUtils.isEmpty(from)) {
+                    log.info("State change to {}", to.getId());
+                    return;
+                }
                 log.info("State from {} change to {}", from.getId(), to.getId());
             }
         };

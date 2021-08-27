@@ -34,4 +34,20 @@ public class CaseTransactionService {
         }
         return caseDO;
     }
+
+    /**
+     * 模拟更新异常，事务中
+     * @param caseDO
+     * @return
+     */
+    @Transactional(rollbackOn = Exception.class)
+    public CaseDO saveCase(CaseDO caseDO) {
+        try {
+            caseDO = caseRepository.save(caseDO);
+            Thread.sleep(1000L);
+        } catch (Exception e) {
+            logger.error("case name: {}, case fail to persist，and the reason：", caseDO.getName(), e);
+        }
+        return caseDO;
+    }
 }

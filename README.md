@@ -18,6 +18,9 @@ PUT：update a case
 GET：query a case by id
 DELETE：delete a case by id
 
+3、localhost:8082/case/CaseupdateByEvent
+PUT：update a case status by event
+
 状态机主要配置
 pers.xue.skills.config.StateMachineConfig
 

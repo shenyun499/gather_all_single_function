@@ -1,5 +1,7 @@
 package pers.xue.skills.entity;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
 
 /**
@@ -8,6 +10,7 @@ import javax.persistence.*;
  * @Description
  */
 @Entity
+@Audited(withModifiedFlag = true)
 @Table(name = "case")
 public class CaseDO {
     @Id
@@ -22,6 +25,9 @@ public class CaseDO {
 
     @Column(name = "content", length = 200)
     private String content;
+
+    @Version
+    private Integer version;
 
     public Integer getId() {
         return id;

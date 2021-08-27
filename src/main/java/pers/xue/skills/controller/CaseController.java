@@ -3,7 +3,9 @@ package pers.xue.skills.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pers.xue.skills.config.CaseException;
 import pers.xue.skills.remote.req.CaseCreateReqDTO;
+import pers.xue.skills.remote.req.CaseUpdateByEventReqDTO;
 import pers.xue.skills.remote.req.CaseUpdateReqDTO;
 import pers.xue.skills.remote.rsp.CaseListRspDTO;
 import pers.xue.skills.remote.rsp.CaseRspDTO;
@@ -28,7 +30,7 @@ public class CaseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CaseRspDTO> query(@PathVariable("id") Integer id) {
+    public ResponseEntity<CaseRspDTO> query(@PathVariable("id") Integer id) throws CaseException {
         return caseService.query(id);
     }
 
@@ -38,12 +40,17 @@ public class CaseController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<CaseRspDTO> update(@RequestBody CaseUpdateReqDTO caseUpdateReqDTO) {
+    public ResponseEntity<CaseRspDTO> update(@RequestBody CaseUpdateReqDTO caseUpdateReqDTO) throws Exception {
         return caseService.update(caseUpdateReqDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CaseRspDTO> delete(@PathVariable("id") Integer id) {
+    public ResponseEntity<CaseRspDTO> delete(@PathVariable("id") Integer id) throws CaseException {
         return caseService.delete(id);
+    }
+
+    @PutMapping("/updateByEvent")
+    public ResponseEntity<CaseRspDTO> updateByEvent(@RequestBody CaseUpdateByEventReqDTO caseUpdateByEventReqDTO) throws Exception {
+        return caseService.updateByEvent(caseUpdateByEventReqDTO);
     }
 }

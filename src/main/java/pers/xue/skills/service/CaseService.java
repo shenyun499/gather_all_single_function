@@ -10,11 +10,14 @@ import org.springframework.statemachine.service.StateMachineService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+import pers.xue.skills.config.CaseConstant;
+import pers.xue.skills.config.CaseException;
 import pers.xue.skills.config.StateMachineServiceConfig;
 import pers.xue.skills.entity.CaseDO;
 import pers.xue.skills.enums.Events;
 import pers.xue.skills.enums.States;
 import pers.xue.skills.remote.req.CaseCreateReqDTO;
+import pers.xue.skills.remote.req.CaseUpdateByEventReqDTO;
 import pers.xue.skills.remote.req.CaseUpdateReqDTO;
 import pers.xue.skills.remote.rsp.CaseListRspDTO;
 import pers.xue.skills.remote.rsp.CaseRspDTO;
@@ -59,14 +62,14 @@ public class CaseService {
         return ResponseEntity.ok(caseListRspDTO);
     }
 
-    public ResponseEntity<CaseRspDTO> query(Integer id) {
+    public ResponseEntity<CaseRspDTO> query(Integer id) throws CaseException {
         Assert.notNull(id, "id field is not null");
         CaseDO caseDO = caseRepository.findById(id).orElse(null);
-        CaseRspDTO caseRspDTO = null;
-        if (!ObjectUtils.isEmpty(caseDO)) {
-            caseRspDTO = new CaseRspDTO();
-            BeanUtils.copyProperties(caseDO, caseRspDTO);
+        if (ObjectUtils.isEmpty(caseDO)) {
+            throw new CaseException("delete record fail!", CaseConstant.RECORD_IS_NOT_EXITST);
         }
+        CaseRspDTO caseRspDTO = new CaseRspDTO();
+        BeanUtils.copyProperties(caseDO, caseRspDTO);
         return ResponseEntity.ok(caseRspDTO);
     }
 
@@ -82,20 +85,46 @@ public class CaseService {
 
     public ResponseEntity<CaseRspDTO> update(CaseUpdateReqDTO caseUpdateReqDTO) {
         Assert.notNull(caseUpdateReqDTO.getId(), "case_id field is not null");
-        Assert.notNull(caseUpdateReqDTO.getStatus(), "status field is not null");
-        Assert.notNull(caseUpdateReqDTO.getEvent(), "event field is not null");
         CaseDO caseDO = caseRepository.findById(caseUpdateReqDTO.getId()).orElse(null);
         Assert.notNull(caseDO, "case data is not exist");
 
-        BeanUtils.copyProperties(caseUpdateReqDTO, caseDO);
+        caseDO.setContent(caseUpdateReqDTO.getContent() != null ? caseUpdateReqDTO.getContent() : caseDO.getContent());
+        caseDO.setName(caseUpdateReqDTO.getName() != null ? caseUpdateReqDTO.getName() : caseDO.getName());
+        //caseTransactionService.saveCase(caseDO);
+        caseDO = caseRepository.save(caseDO);
+        CaseRspDTO caseRspDTO = new CaseRspDTO();
+        BeanUtils.copyProperties(caseDO, caseRspDTO);
+        return ResponseEntity.ok(caseRspDTO);
+    }
+
+    public ResponseEntity<CaseRspDTO> delete(Integer id) throws CaseException {
+        boolean existsById = caseRepository.existsById(id);
+        if (!existsById) {
+            logger.error("case id : {} is not exists，delete fail!", id);
+            throw new CaseException("delete fail!", CaseConstant.RECORD_IS_NOT_EXITST);
+        }
+        caseRepository.deleteById(id);
+        return ResponseEntity.ok(new CaseRspDTO());
+    }
+
+    public ResponseEntity<CaseRspDTO> updateByEvent(CaseUpdateByEventReqDTO caseUpdateByEventReqDTO) throws Exception {
+        Assert.notNull(caseUpdateByEventReqDTO.getId(), "case_id field is not null");
+        Assert.notNull(caseUpdateByEventReqDTO.getStatus(), "status field is not null");
+        Assert.notNull(caseUpdateByEventReqDTO.getEvent(), "event field is not null");
+        CaseDO caseDO = caseRepository.findById(caseUpdateByEventReqDTO.getId()).orElse(null);
+        Assert.notNull(caseDO, "case data is not exist");
+
+        caseDO.setContent(caseUpdateByEventReqDTO.getContent() != null ? caseUpdateByEventReqDTO.getContent() : caseDO.getContent());
+        caseDO.setName(caseUpdateByEventReqDTO.getName() != null ? caseUpdateByEventReqDTO.getName() : caseDO.getName());
+        caseDO.setName(caseUpdateByEventReqDTO.getStatus() != null ? caseUpdateByEventReqDTO.getStatus() : caseDO.getStatus());
         try {
             StateMachine<States, Events> stateMachine = stateMachineServiceConfig.getStateMachine(String.valueOf(caseDO.getId()));
-            if (stateMachine.sendEvent(Events.valueOf(caseUpdateReqDTO.getEvent().toUpperCase(Locale.ROOT)))) {
+            if (stateMachine.sendEvent(Events.valueOf(caseUpdateByEventReqDTO.getEvent().toUpperCase(Locale.ROOT)))) {
                 // start statemachine
                 caseDO = caseRepository.save(caseDO);
             } else {
-                logger.info("need to convert states error");
-                return ResponseEntity.unprocessableEntity().build();
+                logger.info("convert states error, please check the event is right");
+                throw new CaseException("update case fail!", CaseConstant.CONVERT_STATES_ERROR);
             }
         } catch (Exception e) {
             logger.error("id: [{}]异常结束", caseDO.getId(), e);
@@ -106,13 +135,4 @@ public class CaseService {
         return ResponseEntity.ok(caseRspDTO);
     }
 
-    public ResponseEntity<CaseRspDTO> delete(Integer id) {
-        boolean existsById = caseRepository.existsById(id);
-        if (!existsById) {
-            logger.error("case id : {} is not exists，delete fail!", id);
-            throw new RuntimeException("record is not exists，delete fail!");
-        }
-        caseRepository.deleteById(id);
-        return ResponseEntity.ok(new CaseRspDTO());
-    }
 }

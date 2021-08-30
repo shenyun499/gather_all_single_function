@@ -26,10 +26,7 @@ public class SwaggerTestController {
     @ApiResponses({
             @ApiResponse(code = 400, message = "Invalid request", response = ApiError.class)
     })
-    public ResponseEntity<ApiError> date(@RequestBody DateReqDTO dateReqDTO) {
-        ApiError apiError = new ApiError();
-        apiError.setCode(200);
-        apiError.setResponseDesc("错误");
-        return new ResponseEntity<>(apiError, HttpStatus.OK);
+    public ResponseEntity<DateRspDTO> date(@RequestBody DateReqDTO dateReqDTO) {
+        return new ResponseEntity<>(new DateRspDTO(), HttpStatus.OK);
     }
 }

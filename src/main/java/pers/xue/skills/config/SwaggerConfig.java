@@ -28,7 +28,9 @@ public class SwaggerConfig {
     @Bean
     public Docket createApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                // 不使用默认响应信息
                 .useDefaultResponseMessages(false)
+                // 为GET/POST请求设置定制化的响应信息
                 .globalResponseMessage(RequestMethod.GET, getGlobalResponseMessage())
                 .globalResponseMessage(RequestMethod.POST, getGlobalResponseMessage())
                 .apiInfo(apiInfo())
@@ -52,8 +54,8 @@ public class SwaggerConfig {
 
     private List<ResponseMessage> getGlobalResponseMessage() {
         List<ResponseMessage> responseList = new ArrayList<>();
+        responseList.add(new ResponseMessageBuilder().code(200).message("Successful").build());
         responseList.add(new ResponseMessageBuilder().code(400).message("Invalid request").responseModel(new ModelRef("ApiError")).build());
-        responseList.add(new ResponseMessageBuilder().code(200).message("Successful").responseModel(new ModelRef("ApiError")).build());
         responseList.add(new ResponseMessageBuilder().code(502).message("Server error").responseModel(new ModelRef("ApiError")).build());
         return responseList;
     }

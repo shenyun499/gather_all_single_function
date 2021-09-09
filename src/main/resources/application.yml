@@ -1,7 +1,17 @@
 spring:
   profiles:
-    active: dev
+    active: '@spring.profiles.active@'
+
 server:
   port: 8082
   servlet:
     contextPath: /abs
+
+logging:
+  config: classpath:config/logback.xml
+
+
+
+
+#logback:
+  #configurationFile: ${spring.config.location}/logback.xml

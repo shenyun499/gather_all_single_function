@@ -19,7 +19,7 @@ public class UnitTestControllers {
     @Autowired
     private UnitTestService unitTestService;
 
-    @PostMapping("/unitTest")
+    @PostMapping("/unitTests")
     public UnitTestRspDTO unitTest(@RequestBody UnitTestReqDTO unitTestReqDTO) {
         UnitTestEntity unitTestEntity = unitTestService.queryUnitTestByContent(new UnitTestEntity(unitTestReqDTO.getId(), unitTestReqDTO.getContent()));
         UnitTestRspDTO unitTestRspDTO = new UnitTestRspDTO();

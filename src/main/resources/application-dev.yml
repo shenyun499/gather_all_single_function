@@ -6,7 +6,7 @@ spring:
     url: jdbc:h2:~/testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password:
-    data: classpath:sql/boot_backend.sql
+    #data: classpath:sql/boot_backend.sql
   h2:
     console:
       enabled: true

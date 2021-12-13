@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
 @EntityScan
-public class SpringJpaApplication {
+public class SpringBatchApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SpringJpaApplication.class, args);
+        SpringApplication.run(SpringBatchApplication.class, args);
     }
 }

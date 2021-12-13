@@ -1,6 +1,6 @@
-package pers.xue.skills.remote.rsp;
+package pers.xue.jpa.remote.rsp;
 
-public class UnitTestRspDTO {
+public class CommonRspDTO {
     private Integer id;
 
     private String content;

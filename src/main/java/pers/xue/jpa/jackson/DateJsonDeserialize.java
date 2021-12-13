@@ -1,4 +1,4 @@
-package pers.xue.skills.jackson;
+package pers.xue.jpa.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

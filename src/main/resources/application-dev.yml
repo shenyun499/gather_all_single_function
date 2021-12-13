@@ -6,13 +6,13 @@ spring:
     url: jdbc:h2:~/testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password:
-    data: classpath:sql/boot_backend.sql
+    #data: classpath:sql/boot_backend.sql
   h2:
     console:
       enabled: true
   #不存在会自动创建/包括库、表等
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     generate-ddl: true
     show-sql: true

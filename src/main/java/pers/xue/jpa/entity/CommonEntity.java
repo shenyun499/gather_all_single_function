@@ -1,4 +1,4 @@
-package pers.xue.skills.entity;
+package pers.xue.jpa.entity;
 
 import javax.persistence.*;
 
@@ -9,7 +9,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "unit_test")
-public class UnitTestEntity {
+public class CommonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
@@ -19,7 +19,7 @@ public class UnitTestEntity {
     // ...
 
 
-    public UnitTestEntity(Integer id, String content) {
+    public CommonEntity(Integer id, String content) {
         this.id = id;
         this.content = content;
     }

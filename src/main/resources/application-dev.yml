@@ -1,18 +1,45 @@
 spring:
   datasource:
+
+    # platform默认是all，也就是不配置schema/data-all.sql会被加载，如果配置h2则则schema/data-h2会被加载
     platform: h2
     #jdbc:h2:~/testdb 会报错，数据库不会自动创建---已经解决，降低h2版本199-197
     #url: jdbc:h2:mem:testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+
+    # 嵌入式数据库 embedded 可以不配置url，但是要根据程序控制数据库开关，则需要配置
     url: jdbc:h2:~/testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password:
-    #data: classpath:sql/boot_backend.sql
+    #username: sa
+    #password:
+
+#对于schema/data.sql initialization-mode spring.sql.init.mode 对于这些参数用法，做出下面三种不同版本解释
+
+#1、SpringBoot 2.0(1.5.9)以下，不需要配置schema/data路径，会自动加载classpath路径下面的schema.sql和data.sql, schema-all.sql和data-all.sql
+#四个文件的script(前提是platform没有配置，如果配置了则会加载schema/data-${platform}.sql)，需要注意，如果是JPA配置，嵌入式数据库时(h2..)，
+#jpa.hibernate.ddl-auto不能配置为none，不然不会走那两个文件（暂时我猜是针对非嵌入式数据库）
+#https://docs.spring.io/spring-boot/docs/1.5.9.RELEASE/reference/html/howto-database-initialization.html#howto-initialize-a-database-using-spring-jdbc
+
+#2、SpringBoot 2.0及以上，新加入了initialization-mode参数，并且嵌入式数据库默认是EMBEDDED，意思是嵌入式数据库则会生效，非嵌入式不生效，需要配置
+#ALWAYS才会执行那些文件。
+#https://docs.spring.io/spring-boot/docs/2.0.0.RELEASE/reference/html/howto-database-initialization.html
+
+#3、SpringBoot 2.5.x及以上，新加入了spring.sql.init.mode，同时将之前版本的initialization-mode加了过时的注解
+#spring.sql.init.continue-on-error、spring.sql.init.platform、spring.jpa.defer-datasource-initialization
+#https://docs.spring.io/spring-boot/docs/2.5.x/reference/html/howto.html#howto.data-initialization.using-basic-sql-scripts
+
+    #initialization-mode: always
+    #schema: classpath:schema.sql
+    #data: classpath:data.sql
+    #是否自动执行sql script， 默认true，改成false则禁用
+    #initialize: false
+
   h2:
     console:
       enabled: true
-  #不存在会自动创建/包括库、表等
+
+#org.springframework.boot.autoconfigure.orm.jpa.JpaProperties 潜入式数据库默认是create-drop，非嵌入式默认是none
+#如果使用jpa的自动创建表，则不要使用schema.sql初始化，相反如果使用schema.sql创建表，则需要关闭jpa，jpa.hibernate.ddl-aoto:none（暂时我猜是针对非嵌入式数据库）
   jpa:
-    hibernate:
-      ddl-auto: none
+    #hibernate:
+      #ddl-auto: none
     generate-ddl: true
     show-sql: true

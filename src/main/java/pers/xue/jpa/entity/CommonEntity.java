@@ -8,7 +8,7 @@ import javax.persistence.*;
  * @Description
  */
 @Entity
-@Table(name = "unit_test")
+@Table(name = "common_table")
 public class CommonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

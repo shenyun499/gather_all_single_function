@@ -32,6 +32,7 @@ spring:
     #是否自动执行sql script， 默认true，改成false则禁用
     #initialize: false
 
+
   h2:
     console:
       enabled: true

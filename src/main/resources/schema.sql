@@ -4,4 +4,4 @@ create table boot_backend (
     `name` varchar(20),
     `create_time` datetime default null
 );
-insert into boot_backend(id, name, create_time) values(1, shenyun', SYSDATE());
+insert into boot_backend(id, name, create_time) values(1, 'shenyun', SYSDATE());

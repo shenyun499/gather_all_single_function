@@ -23,21 +23,37 @@
   <name>gather_all_single_function</name>
 
   <!-- Inherit defaults from Spring Boot -->
-  <parent>
+  <!--  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>1.5.9.RELEASE</version>
+  </parent>-->
+
+<!--  <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.0.0.RELEASE</version>
+  </parent>-->
+
+<!--  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.5.0</version>
+  </parent>-->
+
+<!--  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.5.1</version>
+  </parent>-->
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.5.5</version>
   </parent>
 
   <dependencies>
-
-    <!--<dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-parent</artifactId>
-      <version>2.0.0.RELEASE</version>
-      <type>pom</type>
-    </dependency>-->
-
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -59,6 +75,13 @@
       <groupId>io.springfox</groupId>
       <artifactId>springfox-swagger-ui</artifactId>
       <version>2.9.2</version>
+    </dependency>
+
+    <!-- 非嵌入式数据库需要， 8.0以上 driverClassName 是com.mysql.cj.jdbc.Driver -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.13</version>
     </dependency>
 
 <!--    <dependency>
@@ -86,7 +109,7 @@
         </dependency>
       </dependencies>
       <activation>
-        <activeByDefault>true</activeByDefault>
+        <activeByDefault>false</activeByDefault>
       </activation>
     </profile>
   </profiles>

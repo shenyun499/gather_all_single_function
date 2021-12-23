@@ -54,7 +54,7 @@ spring:
     init:
       enabled: true
       continue-on-error: false
-      #mode: always
+      mode: always
 
   h2:
     console:

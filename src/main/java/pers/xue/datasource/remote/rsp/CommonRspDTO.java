@@ -1,4 +1,4 @@
-package pers.xue.jpa.remote.rsp;
+package pers.xue.datasource.remote.rsp;
 
 public class CommonRspDTO {
     private Integer id;

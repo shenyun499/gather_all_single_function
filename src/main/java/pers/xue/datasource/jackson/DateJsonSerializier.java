@@ -1,4 +1,4 @@
-package pers.xue.jpa.jackson;
+package pers.xue.datasource.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

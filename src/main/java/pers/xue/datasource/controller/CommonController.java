@@ -1,13 +1,13 @@
-package pers.xue.jpa.controller;
+package pers.xue.datasource.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pers.xue.jpa.remote.req.CommonReqDTO;
-import pers.xue.jpa.remote.rsp.CommonRspDTO;
-import pers.xue.jpa.service.CommonService;
+import pers.xue.datasource.remote.req.CommonReqDTO;
+import pers.xue.datasource.remote.rsp.CommonRspDTO;
+import pers.xue.datasource.service.CommonService;
 
 /**
  * @auther huangzhixue

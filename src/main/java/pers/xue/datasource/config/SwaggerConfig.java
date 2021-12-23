@@ -1,4 +1,4 @@
-package pers.xue.jpa.config;
+package pers.xue.datasource.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,9 +1,9 @@
-package pers.xue.jpa.service;
+package pers.xue.datasource.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pers.xue.jpa.entity.CommonEntity;
-import pers.xue.jpa.repository.CommonRepository;
+import pers.xue.datasource.entity.CommonEntity;
+import pers.xue.datasource.repository.CommonRepository;
 
 /**
  * @auther huangzhixue

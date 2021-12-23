@@ -1,8 +1,8 @@
-package pers.xue.jpa.repository;
+package pers.xue.datasource.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import pers.xue.jpa.entity.CommonEntity;
+import pers.xue.datasource.entity.CommonEntity;
 
 /**
  * @auther huangzhixue

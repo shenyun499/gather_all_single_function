@@ -1,4 +1,4 @@
-package pers.xue.datasource.entity;
+package pers.xue.boot_template.entity;
 
 import javax.persistence.*;
 

@@ -1,4 +1,4 @@
-package pers.xue.datasource.remote.rsp;
+package pers.xue.boot_template.remote.rsp;
 
 public class CommonRspDTO {
     private Integer id;

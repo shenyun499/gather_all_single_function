@@ -1,8 +1,8 @@
-package pers.xue.datasource.repository;
+package pers.xue.boot_template.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import pers.xue.datasource.entity.CommonEntity;
+import pers.xue.boot_template.entity.CommonEntity;
 
 /**
  * @auther huangzhixue

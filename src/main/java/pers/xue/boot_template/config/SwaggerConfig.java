@@ -1,4 +1,4 @@
-package pers.xue.datasource.config;
+package pers.xue.boot_template.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

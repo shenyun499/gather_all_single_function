@@ -1,4 +1,4 @@
-package pers.xue.datasource.jackson;
+package pers.xue.boot_template.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

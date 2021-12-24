@@ -78,11 +78,13 @@
     </dependency>
 
     <!-- 非嵌入式数据库需要， 8.0以上 driverClassName 是com.mysql.cj.jdbc.Driver -->
+<!--
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.13</version>
     </dependency>
+-->
 
 <!--    <dependency>
       <groupId>com.h2database</groupId>
@@ -109,7 +111,7 @@
         </dependency>
       </dependencies>
       <activation>
-        <activeByDefault>false</activeByDefault>
+        <activeByDefault>true</activeByDefault>
       </activation>
     </profile>
   </profiles>

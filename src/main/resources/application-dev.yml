@@ -21,9 +21,9 @@ spring:
     #url: jdbc:h2:mem:testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
 
     # 嵌入式数据库 embedded 可以不配置url，但是要根据程序控制数据库开关，则需要配置
-    #url: jdbc:h2:~/testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    #username: sa
-    #password:
+    url: jdbc:h2:~/testdb;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
     # platform默认是all，也就是不配置schema/data-all.sql会被加载，如果配置h2则则schema/data-h2会被加载
     #platform: h2
     #initialization-mode: always
@@ -36,10 +36,10 @@ spring:
 
 
     # 二、非嵌入式数据库配置--MySQL
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/jpa?useUnicode=true&useSSL=true
-    username: root
-    password: 123456
+    #driverClassName: com.mysql.cj.jdbc.Driver
+    #url: jdbc:mysql://localhost:3306/jpa?useUnicode=true&useSSL=true
+    #username: root
+    #password: 123456
     #initialization-mode: always
     #schema: classpath:schema.sql
     #data: classpath:data.sql
@@ -54,7 +54,7 @@ spring:
     init:
       enabled: true
       continue-on-error: false
-      mode: always
+      #mode: always
 
   h2:
     console:
@@ -63,8 +63,8 @@ spring:
 #org.springframework.boot.autoconfigure.orm.jpa.JpaProperties 潜入式数据库默认是create-drop，非嵌入式默认是none
 #如果使用jpa的自动创建表，则不要使用schema.sql初始化，相反如果使用schema.sql创建表，则需要关闭jpa，jpa.hibernate.ddl-aoto:none（这个是针对非嵌入式数据库的，并且非嵌入式数据库默认就是none）
   jpa:
-    hibernate:
-      ddl-auto: create-drop
+    #hibernate:
+      #ddl-auto: create-drop
     generate-ddl: true
     show-sql: true
     #因为jpa创建table是在执行schema/data.sql之前的，如果使用ddl-auto: create/create-drop，则需要配置下面为true，否则会找不到table而报错

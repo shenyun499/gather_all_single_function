@@ -1,0 +1,1 @@
+insert into common(id,content) values(1, '神韵学Spring Batch'), (2, '神韵学Spring Batch2');

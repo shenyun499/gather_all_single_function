@@ -1,14 +1,14 @@
 # Spring Batch 概述
 
-#目前配置
+# 目前配置
 目前采用嵌入式数据库 h2，jpa与数据库交互，都是为了方便，拿来就可以start，import导入了一些记录，需要更多test记录可以自行导入。
 
-#启动流程
+# 启动流程
 启动方法，pers.xue.batch.SpringBatchApplication.runJob中，调用
 JobExecution run = jobLauncher.run(applicationContext.getBean("readDBAndWriteFileJob", Job.class), jobParameters);
 方法，指定相应的job的bean name，即可
 
-#现有功能
+# 现有功能
 ## 1、读取 db records 两种方式
 pers.xue.batch.job.ReadDB class  
 1、readDBJob  

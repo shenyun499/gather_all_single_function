@@ -30,6 +30,14 @@ import java.util.Map;
  * @author huangzhixue
  * @date 2021/12/17 5:50 下午
  * @Description
+ * 这个类有两个job
+ *      1、readDBJob
+ *          普通的读，通过序列器，并且通过listener判断读取是否完毕，适用于非jpa
+ *      2、readDBJob2
+ *          通过jpa repository指定方法和参数读取记录，这个过程是reader
+ *
+ *      processor的作用这里是将实体类转成bean
+ *      这里的writer除了打印日志，没有做其它任何事
  */
 @Configuration
 public class ReadDB {
@@ -103,6 +111,10 @@ public class ReadDB {
                 .build();
     }
 
+    /**
+     * jpa 读取方式，直接通过repository 和 方法名称、参数分页读取
+     * @return
+     */
     @Bean
     public RepositoryItemReader<CommonEntity> dBItemReader2() {
         Map<String, Sort.Direction> map = new HashMap<>();

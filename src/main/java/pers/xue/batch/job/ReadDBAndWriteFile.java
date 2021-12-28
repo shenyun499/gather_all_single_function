@@ -2,30 +2,47 @@ package pers.xue.batch.job;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.data.RepositoryItemReader;
+import org.springframework.batch.item.file.FlatFileItemWriter;
+import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
+import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.data.domain.Sort;
 import pers.xue.batch.entity.CommonEntity;
-import pers.xue.batch.listener.ReadDBAndWriteFileTaskletListener;
-import pers.xue.batch.reader.ReadDBAndWriterFileItemReader;
-import pers.xue.batch.tasklet.ReadDBAndWriteFileTasklet;
-import pers.xue.batch.writer.ReadDBAndWriterFileItemWriter;
+import pers.xue.batch.repository.CommonRepository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author huangzhixue
  * @date 2021/12/23 5:35 下午
  * @Description
+ * 这个类的作用：从db读取记录，然后写入txt 文件中
+ *  通过jpa repository指定方法和参数读取记录，这个过程是reader
+ *  通过FlatFileItemWriter指定bean 并设置field name和写入path将文件写入，这个过程是writer
+ *
+ *  process:
+ *      1、使用ClassPathResource 并将创建好的file放到classpath路径下没有反应
+ *      2、path写错了，使用FileSystemResource竟然不报错，因为它在相对路径下面创建了一个file并写入，
+ *      我还以为FlatFileItemWriter必须要和FlatFileItemReader一起使用，后面更正了路径发现能写入
  */
 @Configuration
 public class ReadDBAndWriteFile {
 
-    private String generateFilePath = "";
+    // 注释的是绝对路径，目前使用相对路径，直接在项目名称下生成sample-data.txt
+    //private String generateFilePath = "/Users/huangzhixue/IdeaProjects/gather_all_single_function/src/main/resources/sample-data.txt";
+    private String generateFilePath = "sample-data.txt";
+
+    @Autowired
+    private CommonRepository commonRepository;
 
     @Bean
     public Job readDBAndWriteFileJob(JobBuilderFactory jobBuilderFactory, Step readDBAndWriteFileStep) {
@@ -33,48 +50,47 @@ public class ReadDBAndWriteFile {
     }
 
     /**
-     * 普通的方式
+     * jpa 方式读取records，FlatFileItemWriter方式写出txt file
      * @param stepBuilderFactory
      * @return
      */
     @Bean
     public Step readDBAndWriteFileStep(StepBuilderFactory stepBuilderFactory) {
         return stepBuilderFactory.get("readDBAndWriteFileStep")
-                .<List<CommonEntity>, CommonEntity>chunk(1)
+                .<CommonEntity, CommonEntity>chunk(1)
                 .reader(readDBAndWriterFileItemReader())
-                //.processor(dBProcessor())
                 .writer(readDBAndWriterFileItemWriter())
                 .build();
     }
 
-    /**
-     * tasklet方式
-     * @param stepBuilderFactory
-     * @return
-     */
     @Bean
-    public Step readDBAndWriteFileStep2(StepBuilderFactory stepBuilderFactory) {
-        return stepBuilderFactory.get("readDBAndWriteFileStep")
-                .tasklet(readDBAndWriteFileTasklet())
-                .listener(readDBAndWriteFileTaskletListener())
-                .build();
-    }
-
-    private StepExecutionListener readDBAndWriteFileTaskletListener() {
-        return new ReadDBAndWriteFileTaskletListener();
-    }
-
-    private ReadDBAndWriteFileTasklet readDBAndWriteFileTasklet() {
-        return new ReadDBAndWriteFileTasklet(generateFilePath);
+    public FlatFileItemWriter<CommonEntity> readDBAndWriterFileItemWriter() {
+        FlatFileItemWriter<CommonEntity> txtItemWriter = new FlatFileItemWriter<>();
+        txtItemWriter.setAppendAllowed(true);
+        txtItemWriter.setEncoding("UTF-8");
+        // fileSystemResource = new FileSystemResource("D:\\aplus\\shuqian\\target\\"+clz.getSimpleName()+".csv");
+        txtItemWriter.setResource(new FileSystemResource(generateFilePath));
+        txtItemWriter.setLineAggregator(new DelimitedLineAggregator<CommonEntity>() {{
+            setDelimiter(",");
+            setFieldExtractor(new BeanWrapperFieldExtractor<CommonEntity>() {{
+                setNames(new String[]{"id", "content"});
+            }});
+        }});
+        return txtItemWriter;
     }
 
     @Bean
-    public ItemReader<List<CommonEntity>> readDBAndWriterFileItemReader() {
-        return new ReadDBAndWriterFileItemReader();
-    }
-
-    @Bean
-    public ItemWriter<? super CommonEntity> readDBAndWriterFileItemWriter() {
-        return new ReadDBAndWriterFileItemWriter();
+    public RepositoryItemReader<CommonEntity> readDBAndWriterFileItemReader() {
+        Map<String, Sort.Direction> map = new HashMap<>();
+        map.put("id", Sort.Direction.DESC);
+        List<String> params = new ArrayList();
+        params.add("神韵学Spring Batch");
+        RepositoryItemReader<CommonEntity> repositoryItemReader = new RepositoryItemReader<>();
+        repositoryItemReader.setRepository(commonRepository);
+        repositoryItemReader.setPageSize(5);
+        repositoryItemReader.setMethodName("findByContent");
+        repositoryItemReader.setArguments(params);
+        repositoryItemReader.setSort(map);
+        return repositoryItemReader;
     }
 }

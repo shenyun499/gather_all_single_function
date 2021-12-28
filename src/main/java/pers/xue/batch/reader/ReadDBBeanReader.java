@@ -28,7 +28,7 @@ public class ReadDBBeanReader implements ItemReader<CommonEntity> {
     public CommonEntity read() throws UnexpectedInputException, ParseException, NonTransientResourceException {
         if (readDBBeanIterator == null) {
             List<CommonEntity> commonEntities = commonRepository.findAll();
-            readDBBeanIterator =commonEntities.iterator();
+            readDBBeanIterator = commonEntities.iterator();
         }
         if (readDBBeanIterator.hasNext()) {
             CommonEntity commonEntity = readDBBeanIterator.next();

@@ -1,8 +1,6 @@
 package pers.xue.batch.entity;
 
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +10,9 @@ import javax.persistence.*;
  * @Description
  */
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @ToString
 @Builder
 @Entity
@@ -23,27 +24,4 @@ public class CommonEntity {
 
     @Column(name = "content", length = 200)
     private String content;
-    // ...
-
-
-    public CommonEntity(Integer id, String content) {
-        this.id = id;
-        this.content = content;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 }

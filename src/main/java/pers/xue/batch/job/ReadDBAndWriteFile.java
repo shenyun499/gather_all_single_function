@@ -8,7 +8,6 @@ import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -41,9 +40,6 @@ public class ReadDBAndWriteFile {
     //private String generateFilePath = "/Users/huangzhixue/IdeaProjects/gather_all_single_function/src/main/resources/sample-data.txt";
     private String generateFilePath = "sample-data.txt";
 
-    @Autowired
-    private CommonRepository commonRepository;
-
     @Bean
     public Job readDBAndWriteFileJob(JobBuilderFactory jobBuilderFactory, Step readDBAndWriteFileStep) {
         return jobBuilderFactory.get("readDBAndWriteFileJob").start(readDBAndWriteFileStep).build();
@@ -55,10 +51,10 @@ public class ReadDBAndWriteFile {
      * @return
      */
     @Bean
-    public Step readDBAndWriteFileStep(StepBuilderFactory stepBuilderFactory) {
+    public Step readDBAndWriteFileStep(StepBuilderFactory stepBuilderFactory, CommonRepository commonRepository) {
         return stepBuilderFactory.get("readDBAndWriteFileStep")
                 .<CommonEntity, CommonEntity>chunk(1)
-                .reader(readDBAndWriterFileItemReader())
+                .reader(readDBAndWriterFileItemReader(commonRepository))
                 .writer(readDBAndWriterFileItemWriter())
                 .build();
     }
@@ -66,12 +62,15 @@ public class ReadDBAndWriteFile {
     @Bean
     public FlatFileItemWriter<CommonEntity> readDBAndWriterFileItemWriter() {
         FlatFileItemWriter<CommonEntity> txtItemWriter = new FlatFileItemWriter<>();
+        // 允许追加写入 file
         txtItemWriter.setAppendAllowed(true);
         txtItemWriter.setEncoding("UTF-8");
         // fileSystemResource = new FileSystemResource("D:\\aplus\\shuqian\\target\\"+clz.getSimpleName()+".csv");
         txtItemWriter.setResource(new FileSystemResource(generateFilePath));
         txtItemWriter.setLineAggregator(new DelimitedLineAggregator<CommonEntity>() {{
+            // 字段生成分隔符
             setDelimiter(",");
+            // 字段映射
             setFieldExtractor(new BeanWrapperFieldExtractor<CommonEntity>() {{
                 setNames(new String[]{"id", "content"});
             }});
@@ -80,14 +79,17 @@ public class ReadDBAndWriteFile {
     }
 
     @Bean
-    public RepositoryItemReader<CommonEntity> readDBAndWriterFileItemReader() {
+    public RepositoryItemReader<CommonEntity> readDBAndWriterFileItemReader(CommonRepository commonRepository) {
         Map<String, Sort.Direction> map = new HashMap<>();
+        // 以字段id 排序，倒序
         map.put("id", Sort.Direction.DESC);
+        // 添加查询参数
         List<String> params = new ArrayList();
         params.add("神韵学Spring Batch");
         RepositoryItemReader<CommonEntity> repositoryItemReader = new RepositoryItemReader<>();
         repositoryItemReader.setRepository(commonRepository);
         repositoryItemReader.setPageSize(5);
+        // 查询方法
         repositoryItemReader.setMethodName("findByContent");
         repositoryItemReader.setArguments(params);
         repositoryItemReader.setSort(map);

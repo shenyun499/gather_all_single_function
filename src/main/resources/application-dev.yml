@@ -16,3 +16,5 @@ spring:
       ddl-auto: update
     generate-ddl: true
     show-sql: true
+
+unit-test: unit_test

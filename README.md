@@ -3,12 +3,12 @@
 Spring Batch 是一个基于Spring的轻量级的批处理框架。提供了大量可重用组件，包括日志、追踪、事务、任务作业统计、任务重启、跳过、重复、资源管理。  
 Spring Batch 是一个批处理应用框架，不是调度框架，需要与调度框架合作来构建完成批处理任务（比如xx-job/spring scheduler)，它只关注批处理相关问题，如事务、并发、监控、执行等。
 ## 特性
-1、工作流状态机：由可以在不同状态间转换的步骤构成工作流。
-2、支持事务处理：基于数据块，分批处理。
-3、声明式IO：提供了非常易用的输入输出支持，使开发者关注于业务逻辑。
-4、错误处理：框架支持异常跳过和记录日志。
-5、可扩展机制：可以与第三方框架比较好的集成。
-6、基于Spring框架之上，因此可以使用Spring的一些特性，比如IOC、Test...
+1、工作流状态机：由可以在不同状态间转换的步骤构成工作流。  
+2、支持事务处理：基于数据块，分批处理。  
+3、声明式IO：提供了非常易用的输入输出支持，使开发者关注于业务逻辑。  
+4、错误处理：框架支持异常跳过和记录日志。  
+5、可扩展机制：可以与第三方框架比较好的集成。  
+6、基于Spring框架之上，因此可以使用Spring的一些特性，比如IOC、Test...  
 
 ## 简单的介绍一下运行原理
 其中最主要的是 JobLauncher、Job、Step(Chunk,Tasklet)  
@@ -16,16 +16,21 @@ Step：Chunk(ItemReader、ItemProcessor、ItemWriter)、Tasklet
 
 JobLauncher：是任务启动器，用来启动job，是整个程序的入口。  
 Job：代表一个具体的任务，Step代表一个步骤，一个Job可以由几个Step组成。  
-Step：Step实现方式有两种，分别是Chunk和Tasklet，Chunk包含三个部分，分别是ItemReader、ItemProcessor、ItemWriter
-ItemReader：数据读取，可以从db、各种file等读取需要的数据进行后续处理。这个由很多实现,可以参考 [Item Readers](https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/appendix.html#listOfReadersAndWriters)
-ItemProcessor：对数据进行加工，比如读取的数据需要进行过滤，或者类型对象转换等等，然后交给ItemWriter处理。
-ItemWriter：数据写出，可以写出到db、各种file等。这个也由很多实现，可以参考：[Item Writers](https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/appendix.html#itemWritersAppendix)
+Step：Step实现方式有两种，分别是Chunk和Tasklet，Chunk包含三个部分，分别是ItemReader、ItemProcessor、ItemWriter  
+ItemReader：数据读取，可以从db、各种file等读取需要的数据进行后续处理。这个由很多实现,可以参考 [Item Readers](https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/appendix.html#listOfReadersAndWriters)  
+ItemProcessor：对数据进行加工，比如读取的数据需要进行过滤，或者类型对象转换等等，然后交给ItemWriter处理。  
+ItemWriter：数据写出，可以写出到db、各种file等。这个也由很多实现，可以参考：[Item Writers](https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/appendix.html#itemWritersAppendix)  
 
-incrementer(new RunIdIncrementer())：jobParameter 为null时，会重新建立一个，否则在原基础上加1
-faultTolerant()：启用跳过skip功能
-Skip：遇到异常，跳过处理，可以用系统指定的，也可以自定义
-SkipLimit：跳过的最大项数，超过这个数将会导致整个执行失败
-SkipPolicy：自定义跳过逻辑
+chunkSize(Integer)
+
+incrementer(new RunIdIncrementer())：jobParameter 为null时，会重新建立一个，否则在原基础上加1  
+faultTolerant()：启用跳过skip功能/重试功能  
+skip(excetion)：遇到异常(符合跳过的异常)，跳过处理，可以用系统指定的，也可以自定义.比如遇到数据校验异常跳过这个异常，skip(DataValidationException.class)  
+skipLimit(Integer)：允许跳过的最大次数，超过这个数将会导致整个执行失败  
+skipPolicy(Bean)：自定义跳过逻辑  
+
+retry(ConnectTimeoutException.class)：遇到异常(符合重试的异常)，重新执行这个step  
+retryLimit(Integer)：允许重试的最大次数，超过这个数将结束重试执行程序。
 
 # 二、了解当前项目
 ## 当前项目配置

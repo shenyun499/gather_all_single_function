@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import pers.xue.batch.entity.CommonEntity;
 import pers.xue.batch.repository.CommonRepository;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,7 +65,7 @@ public class ReadDBAndWriteFile {
         FlatFileItemWriter<CommonEntity> txtItemWriter = new FlatFileItemWriter<>();
         // 允许追加写入 file
         txtItemWriter.setAppendAllowed(true);
-        txtItemWriter.setEncoding("UTF-8");
+        txtItemWriter.setEncoding(StandardCharsets.UTF_8.name());
         // fileSystemResource = new FileSystemResource("D:\\aplus\\shuqian\\target\\"+clz.getSimpleName()+".csv");
         txtItemWriter.setResource(new FileSystemResource(generateFilePath));
         txtItemWriter.setLineAggregator(new DelimitedLineAggregator<CommonEntity>() {{

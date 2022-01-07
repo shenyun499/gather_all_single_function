@@ -39,7 +39,10 @@ public class SpringBatchApplication {
             //JobExecution run = jobLauncher.run(applicationContext.getBean("readDBJob2", Job.class), jobParameters);
 
             // read db and write txt file job
-            JobExecution run = jobLauncher.run(applicationContext.getBean("readDBAndWriteFileJob", Job.class), jobParameters);
+            //JobExecution run = jobLauncher.run(applicationContext.getBean("readDBAndWriteFileJob", Job.class), jobParameters);
+
+            // read db and write json file job
+            JobExecution run = jobLauncher.run(applicationContext.getBean("readDBAndWriteJsonFileJob", Job.class), jobParameters);
             exitCode = run.getExitStatus();
             jobName = run.getJobConfigurationName();
         } catch (JobExecutionAlreadyRunningException | JobRestartException

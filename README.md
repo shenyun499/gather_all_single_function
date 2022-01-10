@@ -54,3 +54,8 @@ pers.xue.batch.job.ReadDB class
 pers.xue.batch.job.ReadDBAndWriteFile class
 1、通过jpa repository指定方法和参数读取记录，这个过程是reader  
 2、通过FlatFileItemWriter指定bean 并设置field name和写入path将文件写入，这个过程是writer  
+
+## 3、从db读取记录，然后写入json 文件中
+pers.xue.batch.job.ReadDBAndWriteJsonFile class  
+1、通过jpa repository指定方法和参数读取记录，这个过程是reader  
+2、通过JsonFileItemWriter指定bean 并自定义转换json的格式和指定写入path将文件写入，这个过程是writer  

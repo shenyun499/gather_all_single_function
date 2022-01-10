@@ -28,6 +28,8 @@ import java.util.HashMap;
  * @author huangzhixue
  * @date 2022/1/7 11:40 上午
  * @Description
+ *
+ * 从db读取记录，然后写入json 文件中
  */
 @Configuration
 public class ReadDBAndWriteJsonFile {

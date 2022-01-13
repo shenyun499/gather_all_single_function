@@ -1,40 +1,74 @@
 package pers.xue.batch.job;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.test.JobLauncherTestUtils;
-import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import pers.xue.batch.SpringBatchApplication;
-import pers.xue.batch.repository.CommonRepository;
-
-import javax.sql.DataSource;
 
 /**
  * @author huangzhixue
- * @date 2022/1/6 11:46 上午
+ * @date 2022/1/12 3:59 下午
  * @Description
  */
-@SpringBatchTest
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = SpringBatchApplication.class)
+//@ContextConfiguration(classes = { SpringBatchApplication.class })
+@SpringBootTest
+@ActiveProfiles(value = "test")
 public class ReadDBTest {
-    @Autowired
+
     private JobLauncherTestUtils jobLauncherTestUtils;
 
-    private CommonRepository commonRepository;
+    @Autowired
+    private ReadDB config;
 
+    @Autowired
+    private JobLauncher launcher;
+
+    @Autowired
+    private JobRepository repository;
+
+    @Autowired
+    private JobBuilderFactory jobBuilderFactory;
+
+    @Autowired
+    private Step readDBStep;
+
+    public ReadDBTest() {
+    }
+
+    @Before
+    public void setup() {
+        jobLauncherTestUtils = new JobLauncherTestUtils();
+        jobLauncherTestUtils.setJobLauncher(launcher);
+        jobLauncherTestUtils.setJobRepository(repository);
+    }
+
+    // Test step
     @Test
-    public void testJob() throws Exception {
-        commonRepository.findByContent("神韵学Spring Batch");
+    public void testLaunchJobWithJobLauncher() throws Exception {
+        final JobExecution result = jobLauncherTestUtils.getJobLauncher().run(
+                config.readDBJob(jobBuilderFactory, readDBStep),
+                jobLauncherTestUtils.getUniqueJobParameters());
+        Assert.assertNotNull(result);
+        Assert.assertEquals(BatchStatus.COMPLETED, result.getStatus());
+    }
 
+    // Test step
+    @Test
+    public void testSomeStep() {
+        jobLauncherTestUtils.setJob(config.readDBJob(jobBuilderFactory, readDBStep));
         JobExecution jobExecution = jobLauncherTestUtils.launchStep("readDBStep");
-
-
-        Assert.assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
+        Assert.assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
     }
 }

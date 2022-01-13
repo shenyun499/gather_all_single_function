@@ -26,6 +26,3 @@ spring:
     job:
       #禁止自动执行job，否则会一直执行所有job
       enabled: false
-
-job:
-  key: readDB

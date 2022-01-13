@@ -26,10 +26,10 @@ public class SpringBatchApplication {
         runJob(applicationContext);
     }
     private static void runJob(ApplicationContext applicationContext) {
+        String jobName = applicationContext.getEnvironment().getProperty("job.key");
         JobLauncher jobLauncher = applicationContext.getBean(JobLauncher.class);
         JobParameters jobParameters = new JobParametersBuilder().addDate("test", new Date()).toJobParameters();
 
-        String jobName = null;
         ExitStatus exitCode = null;
         try {
             // read db job
@@ -42,9 +42,10 @@ public class SpringBatchApplication {
             //JobExecution run = jobLauncher.run(applicationContext.getBean("readDBAndWriteFileJob", Job.class), jobParameters);
 
             // read db and write json file job
-            JobExecution run = jobLauncher.run(applicationContext.getBean("readDBAndWriteJsonFileJob", Job.class), jobParameters);
+            //JobExecution run = jobLauncher.run(applicationContext.getBean("readDBAndWriteJsonFileJob", Job.class), jobParameters);
+
+            JobExecution run = jobLauncher.run(applicationContext.getBean(jobName, Job.class), jobParameters);
             exitCode = run.getExitStatus();
-            jobName = run.getJobConfigurationName();
         } catch (JobExecutionAlreadyRunningException | JobRestartException
                 | JobInstanceAlreadyCompleteException | JobParametersInvalidException e) {
             log.error("Job {} failed:\n{}", jobName, e);

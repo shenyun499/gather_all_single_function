@@ -9,8 +9,10 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.RepositoryItemReader;
+import org.springframework.batch.item.json.JacksonJsonObjectMarshaller;
 import org.springframework.batch.item.json.JsonFileItemWriter;
 import org.springframework.batch.item.json.JsonObjectMarshaller;
+import org.springframework.batch.item.json.builder.JsonFileItemWriterBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -46,7 +48,8 @@ public class ReadDBAndWriteJsonFile {
         return stepBuilderFactory.get("readDBAndWriteJsonFileStep")
                 .<CommonEntity, CommonEntity>chunk(1000)
                 .reader(readDBAndWriteJsonFileReader)
-                .writer(readDBAndWriteJsonFileWriter())
+                //.writer(readDBAndWriteJsonFileWriter())
+                .writer(readDBAndWriteJsonFileWriter2byOfficial())
                 .build();
     }
 
@@ -83,6 +86,20 @@ public class ReadDBAndWriteJsonFile {
         jsonFileItemWriter.setEncoding(StandardCharsets.UTF_8.name());
         jsonFileItemWriter.setName("readDBAndWriteJsonFileWriter");
         return jsonFileItemWriter;
+    }
+
+    /**
+     * @return json写
+     * 根据官网写的 https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/readersAndWriters.html#jsonfileitemwriter
+     */
+    @Bean
+    public ItemWriter<CommonEntity> readDBAndWriteJsonFileWriter2byOfficial() {
+        return new JsonFileItemWriterBuilder<CommonEntity>()
+                .name("readDBAndWriteJsonFileWriter")
+                .encoding(StandardCharsets.UTF_8.name())
+                .resource(new FileSystemResource(generateFilePath))
+                .jsonObjectMarshaller(new JacksonJsonObjectMarshaller<>())
+                .build();
     }
 
     /**

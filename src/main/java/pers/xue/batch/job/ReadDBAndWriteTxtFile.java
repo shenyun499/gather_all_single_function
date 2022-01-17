@@ -66,7 +66,7 @@ public class ReadDBAndWriteTxtFile {
     @Bean
     public FlatFileItemWriter<CommonEntity> readDBAndWriterTxtFileItemWriter() {
         BeanWrapperFieldExtractor<CommonEntity> fieldExtractor = new BeanWrapperFieldExtractor<>();
-        fieldExtractor.setNames(new String[] {"id", "credit"});
+        fieldExtractor.setNames(new String[] {"id", "content"});
         fieldExtractor.afterPropertiesSet();
 
         DelimitedLineAggregator<CommonEntity> lineAggregator = new DelimitedLineAggregator<>();

@@ -27,5 +27,10 @@ spring:
       #禁止自动执行job，否则会一直执行所有job
       enabled: false
 
+# 当前运行的job name
 job:
-  key: readDBAndWriteTxtFileJob
+  key: readDBAndWriteJsonFileJob
+# readDBJob
+# readDBJob2
+# readDBAndWriteJsonFileJob
+# readDBAndWriteTxtFileJob

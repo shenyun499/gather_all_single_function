@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class ReadDBListener implements StepExecutionListener {
     @Override
     public void beforeStep(StepExecution stepExecution) {
+        // it is not need to do anything now
     }
 
     @Override

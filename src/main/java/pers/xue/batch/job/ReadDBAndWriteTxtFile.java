@@ -6,6 +6,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
+import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,7 @@ import java.util.Map;
  * 这个类的作用：从db读取记录，然后写入txt 文件中
  *  通过jpa repository指定方法和参数读取记录，这个过程是reader
  *  通过FlatFileItemWriter指定bean 并设置field name和写入path将文件写入，这个过程是writer
+ *  (https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/readersAndWriters.html#SimplifiedFileWritingExample)
  *
  *  process:
  *      1、使用ClassPathResource 并将创建好的file放到classpath路径下没有反应
@@ -37,8 +39,9 @@ import java.util.Map;
 @Configuration
 public class ReadDBAndWriteTxtFile {
 
-    // 注释的是绝对路径，目前使用相对路径，直接在项目名称下生成sample-data.txt
-    //private String generateFilePath = "/Users/huangzhixue/IdeaProjects/gather_all_single_function/src/main/resources/sample-data.txt";
+    /**
+     * 目前使用相对路径，直接在项目名称下生成sample-data.txt，也可以使用绝对路径，/Users/huangzhixue/IdeaProjects/gather_all_single_function/src/main/resources/sample-data.txt
+     */
     private String generateFilePath = "sample-data.txt";
 
     @Bean
@@ -62,21 +65,23 @@ public class ReadDBAndWriteTxtFile {
 
     @Bean
     public FlatFileItemWriter<CommonEntity> readDBAndWriterTxtFileItemWriter() {
-        FlatFileItemWriter<CommonEntity> txtItemWriter = new FlatFileItemWriter<>();
-        // 允许追加写入 file
-        txtItemWriter.setAppendAllowed(true);
-        txtItemWriter.setEncoding(StandardCharsets.UTF_8.name());
-        // fileSystemResource = new FileSystemResource("D:\\aplus\\shuqian\\target\\"+clz.getSimpleName()+".csv");
-        txtItemWriter.setResource(new FileSystemResource(generateFilePath));
-        txtItemWriter.setLineAggregator(new DelimitedLineAggregator<CommonEntity>() {{
-            // 字段生成分隔符
-            setDelimiter(",");
-            // 字段映射
-            setFieldExtractor(new BeanWrapperFieldExtractor<CommonEntity>() {{
-                setNames(new String[]{"id", "content"});
-            }});
-        }});
-        return txtItemWriter;
+        BeanWrapperFieldExtractor<CommonEntity> fieldExtractor = new BeanWrapperFieldExtractor<>();
+        fieldExtractor.setNames(new String[] {"id", "credit"});
+        fieldExtractor.afterPropertiesSet();
+
+        DelimitedLineAggregator<CommonEntity> lineAggregator = new DelimitedLineAggregator<>();
+        lineAggregator.setDelimiter(",");
+        lineAggregator.setFieldExtractor(fieldExtractor);
+
+        return new FlatFileItemWriterBuilder<CommonEntity>()
+                .name("readDBAndWriterTxtFileItemWriter")
+                // 写出path
+                .resource(new FileSystemResource(generateFilePath))
+                .encoding(StandardCharsets.UTF_8.name())
+                // 允许追加写入
+                .append(true)
+                .lineAggregator(lineAggregator)
+                .build();
     }
 
     @Bean
@@ -85,7 +90,7 @@ public class ReadDBAndWriteTxtFile {
         // 以字段id 排序，倒序
         map.put("id", Sort.Direction.DESC);
         // 添加查询参数
-        List<String> params = new ArrayList();
+        List<String> params = new ArrayList<>();
         params.add("神韵学Spring Batch");
         RepositoryItemReader<CommonEntity> repositoryItemReader = new RepositoryItemReader<>();
         repositoryItemReader.setRepository(commonRepository);

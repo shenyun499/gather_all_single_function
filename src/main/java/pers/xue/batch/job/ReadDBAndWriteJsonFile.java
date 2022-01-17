@@ -22,7 +22,7 @@ import pers.xue.batch.writer.ReadDBAndWriteJsonFileWriter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collections;
 
 /**
  * @author huangzhixue
@@ -60,7 +60,7 @@ public class ReadDBAndWriteJsonFile {
         // 添加查询参数
         repositoryItemReader.setArguments(Arrays.asList("神韵学Spring Batch"));
         // 以字段id 排序，倒序
-        repositoryItemReader.setSort(new HashMap<String, Sort.Direction>(){{put("id", Sort.Direction.DESC);}});
+        repositoryItemReader.setSort(Collections.singletonMap("id", Sort.Direction.DESC));
         return repositoryItemReader;
     }
 

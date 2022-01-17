@@ -32,9 +32,6 @@ public class ReadDBTest {
     private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Autowired
-    private ReadDB config;
-
-    @Autowired
     private JobLauncher launcher;
 
     @Autowired
@@ -42,6 +39,9 @@ public class ReadDBTest {
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
+
+    @Autowired
+    private ReadDB config;
 
     @Autowired
     private Step readDBStep;
@@ -52,6 +52,7 @@ public class ReadDBTest {
     @Before
     public void setup() {
         jobLauncherTestUtils = new JobLauncherTestUtils();
+        // job 为具体job，每个不同test job都不一样
         jobLauncherTestUtils.setJob(config.readDBJob(jobBuilderFactory, readDBStep));
         jobLauncherTestUtils.setJobLauncher(launcher);
         jobLauncherTestUtils.setJobRepository(repository);
@@ -68,6 +69,7 @@ public class ReadDBTest {
     // Test step
     @Test
     public void testReadDBStep() {
+        // readDBStep为单元测试具体名称
         JobExecution result = jobLauncherTestUtils.launchStep("readDBStep");
         Assert.assertNotNull(result);
         Assert.assertEquals(BatchStatus.COMPLETED, result.getStatus());

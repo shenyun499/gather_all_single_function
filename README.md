@@ -46,6 +46,7 @@ throttleLimit(Integer)：采用几个线程来处理，一般设置为core threa
 启动方法，pers.xue.batch.SpringBatchApplication.runJob中，调用  
 JobExecution run = jobLauncher.run(applicationContext.getBean("readDBAndWriteFileJob", Job.class), jobParameters);  
 方法，指定相应的job的bean name，即可  
+新的启动改变 job.key -- dev环境， 里面的value是指当前job bean name  
 
 # 三、当前项目实现的具体功能
 ## 1、读取 db records 两种方式
@@ -57,7 +58,7 @@ pers.xue.batch.job.ReadDB class
 两个仅仅是读取，没有做writer扩展功能  
 
 ## 2、从db读取记录，然后写入txt 文件中
-pers.xue.batch.job.ReadDBAndWriteFile class  
+pers.xue.batch.job.ReadDBAndWriteTxtFile class  
 1、通过jpa repository指定方法和参数读取记录，这个过程是reader  
 2、通过FlatFileItemWriter指定bean 并设置field name和写入path将文件写入，这个过程是writer  
 

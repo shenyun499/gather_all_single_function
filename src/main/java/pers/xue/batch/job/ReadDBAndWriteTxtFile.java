@@ -35,15 +35,15 @@ import java.util.Map;
  *      我还以为FlatFileItemWriter必须要和FlatFileItemReader一起使用，后面更正了路径发现能写入
  */
 @Configuration
-public class ReadDBAndWriteFile {
+public class ReadDBAndWriteTxtFile {
 
     // 注释的是绝对路径，目前使用相对路径，直接在项目名称下生成sample-data.txt
     //private String generateFilePath = "/Users/huangzhixue/IdeaProjects/gather_all_single_function/src/main/resources/sample-data.txt";
     private String generateFilePath = "sample-data.txt";
 
     @Bean
-    public Job readDBAndWriteFileJob(JobBuilderFactory jobBuilderFactory, Step readDBAndWriteFileStep) {
-        return jobBuilderFactory.get("readDBAndWriteFileJob").start(readDBAndWriteFileStep).build();
+    public Job readDBAndWriteTxtFileJob(JobBuilderFactory jobBuilderFactory, Step readDBAndWriteTxtFileStep) {
+        return jobBuilderFactory.get("readDBAndWriteTxtFileJob").start(readDBAndWriteTxtFileStep).build();
     }
 
     /**
@@ -52,16 +52,16 @@ public class ReadDBAndWriteFile {
      * @return
      */
     @Bean
-    public Step readDBAndWriteFileStep(StepBuilderFactory stepBuilderFactory, CommonRepository commonRepository) {
+    public Step readDBAndWriteTxtFileStep(StepBuilderFactory stepBuilderFactory, CommonRepository commonRepository) {
         return stepBuilderFactory.get("readDBAndWriteFileStep")
                 .<CommonEntity, CommonEntity>chunk(1)
-                .reader(readDBAndWriterFileItemReader(commonRepository))
-                .writer(readDBAndWriterFileItemWriter())
+                .reader(readDBAndWriterTxtFileItemReader(commonRepository))
+                .writer(readDBAndWriterTxtFileItemWriter())
                 .build();
     }
 
     @Bean
-    public FlatFileItemWriter<CommonEntity> readDBAndWriterFileItemWriter() {
+    public FlatFileItemWriter<CommonEntity> readDBAndWriterTxtFileItemWriter() {
         FlatFileItemWriter<CommonEntity> txtItemWriter = new FlatFileItemWriter<>();
         // 允许追加写入 file
         txtItemWriter.setAppendAllowed(true);
@@ -80,7 +80,7 @@ public class ReadDBAndWriteFile {
     }
 
     @Bean
-    public RepositoryItemReader<CommonEntity> readDBAndWriterFileItemReader(CommonRepository commonRepository) {
+    public RepositoryItemReader<CommonEntity> readDBAndWriterTxtFileItemReader(CommonRepository commonRepository) {
         Map<String, Sort.Direction> map = new HashMap<>();
         // 以字段id 排序，倒序
         map.put("id", Sort.Direction.DESC);

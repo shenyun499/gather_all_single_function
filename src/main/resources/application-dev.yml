@@ -28,4 +28,4 @@ spring:
       enabled: false
 
 job:
-  key: readDB
+  key: readDBAndWriteTxtFileJob

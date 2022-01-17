@@ -68,5 +68,6 @@ pers.xue.batch.job.ReadDBAndWriteJsonFile class
 
 # 三、测试类怎么写
 pers.xue.batch.job.ReadDBTest，参考ReadDBTest这个class  
-需要@RunWith(SpringRunner.class)和@ContextConfiguration(classes = { 配置class })或者@SpringBootTest  
-然后通过JobLauncherTestUtils，最重要的是这个job怎么返回，我那里是注入了整个job的配置类ReadDB，然后通过config.readDBJob(jobBuilderFactory, readDBStep)获得这个Job，然后测试Job/Step
+需要@RunWith(SpringRunner.class)和@ContextConfiguration(classes = { 配置class })或者@SpringBootTest，或者两者一起使用  
+然后通过JobLauncherTestUtils，最重要的是这个job怎么返回，我那里是注入了整个job的配置类ReadDB，然后通过config.readDBJob(jobBuilderFactory, readDBStep)获得这个Job，然后测试Job/Step  
+@ConditionalOnProperty(name = "job.key", havingValue = "readDBJob")这个配置在@Configuration一起，那当有name这个key时，并且值为havingValue时，这个配置类生效

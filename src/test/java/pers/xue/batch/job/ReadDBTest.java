@@ -14,16 +14,18 @@ import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import pers.xue.batch.SpringBatchApplication;
 
 /**
  * @author huangzhixue
  * @date 2022/1/12 3:59 下午
  * @Description
  */
-@RunWith(SpringRunner.class)
-//@ContextConfiguration(classes = { SpringBatchApplication.class })
 @SpringBootTest
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = { SpringBatchApplication.class })
 @ActiveProfiles(value = "test")
 public class ReadDBTest {
 
@@ -50,25 +52,24 @@ public class ReadDBTest {
     @Before
     public void setup() {
         jobLauncherTestUtils = new JobLauncherTestUtils();
+        jobLauncherTestUtils.setJob(config.readDBJob(jobBuilderFactory, readDBStep));
         jobLauncherTestUtils.setJobLauncher(launcher);
         jobLauncherTestUtils.setJobRepository(repository);
     }
 
-    // Test step
+    // Test job
     @Test
-    public void testLaunchJobWithJobLauncher() throws Exception {
-        final JobExecution result = jobLauncherTestUtils.getJobLauncher().run(
-                config.readDBJob(jobBuilderFactory, readDBStep),
-                jobLauncherTestUtils.getUniqueJobParameters());
+    public void testReadDBJob() throws Exception {
+        JobExecution result = jobLauncherTestUtils.launchJob();
         Assert.assertNotNull(result);
         Assert.assertEquals(BatchStatus.COMPLETED, result.getStatus());
     }
 
     // Test step
     @Test
-    public void testSomeStep() {
-        jobLauncherTestUtils.setJob(config.readDBJob(jobBuilderFactory, readDBStep));
-        JobExecution jobExecution = jobLauncherTestUtils.launchStep("readDBStep");
-        Assert.assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
+    public void testReadDBStep() {
+        JobExecution result = jobLauncherTestUtils.launchStep("readDBStep");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(BatchStatus.COMPLETED, result.getStatus());
     }
 }

@@ -29,8 +29,9 @@ spring:
 
 # 当前运行的job name
 job:
-  key: readDBAndWriteJsonFileJob
-# readDBJob
-# readDBJob2
-# readDBAndWriteJsonFileJob
-# readDBAndWriteTxtFileJob
+  key: readDBAndWriteCsvFileJob
+# readDBJob     通过序列器从db读取并经过普通的writer
+# readDBJob2    通过jpa repository从db读取并经过普通的writer(后面都用jpa repository)
+# readDBAndWriteJsonFileJob   从db读取并写入json文件
+# readDBAndWriteTxtFileJob    从db读取并写入txt文件
+# readDBAndWriteCsvFileJob    从db读取并写入csv文件

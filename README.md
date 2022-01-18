@@ -1,4 +1,5 @@
 # 一、Spring Batch 介绍
+有个看了比较好的推荐文章：[https://www.cnblogs.com/rookiemzl/p/9788002.html](https://www.cnblogs.com/rookiemzl/p/9788002.html)
 ## 概念
 Spring Batch 是一个基于Spring的轻量级的批处理框架。提供了大量可重用组件，包括日志、追踪、事务、任务作业统计、任务重启、跳过、重复、资源管理。  
 Spring Batch 是一个批处理应用框架，不是调度框架，需要与调度框架合作来构建完成批处理任务（比如xx-job/spring scheduler)，它只关注批处理相关问题，如事务、并发、监控、执行等。

@@ -1,9 +1,12 @@
 package lambda;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -18,6 +21,8 @@ import java.util.stream.Collectors;
  * @Date 2019/12/14 15:21
  */
 public class LambdaGrammer {
+    private static final Logger log = LoggerFactory.getLogger(LambdaGrammer.class);
+
     private List<Integer> list = Arrays.asList(20, 30, 40, 10, 15);
 
     @Test
@@ -142,6 +147,74 @@ public class LambdaGrammer {
         BiPredicate<String, String> biP = String::equals;
         boolean test = biP.test("abc", "cba");
         System.out.println(test);
+    }
+
+    @Test
+    public void test11() {
+        Runnable r = getRunnable();
+        Thread thread = new Thread(r);
+        thread.start();
+    }
+
+    public static Runnable getRunnable() {
+        /*return () -> {
+        // 这里指的是Runnable 的run方法的实现作用，仅仅实现作用
+            log.info("aaa");
+            System.out.println("我是Lambda表达式实现，一条语句");
+            System.out.println("我是Lambda表达式实现，一条语句");
+        };*/
+        return () -> log.info("aaa");
+    }
+
+    /**
+     * BigDecimal  求和
+     * https://www.debug8.com/java/t_48084.html
+     */
+    @Test
+    public void test12() {
+        List<BigDecimal> bigDecimals = Arrays.asList(BigDecimal.valueOf(10), BigDecimal.valueOf(20));
+        BigDecimal reduce = bigDecimals.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+        System.out.println(reduce);
+
+        List<AmountObject> amountObjects = Arrays.asList(new AmountObject(BigDecimal.valueOf(200), 1), new AmountObject(BigDecimal.valueOf(300), 2));
+        BigDecimal amountSum = amountObjects.stream().map(AmountObject::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+        System.out.println(amountSum);
+    }
+
+    /**
+     * 基本类型 求和
+     */
+    @Test
+    public void test13() {
+        List<Integer> ints = Arrays.asList(1, 2, 3, 4, 5, 6);
+        int sum = ints.stream().mapToInt(value -> value).sum();
+        System.out.println(sum);
+
+        List<Long> longs = Arrays.asList(1L, 2L, 3L, 4L, 5L, 6L, 7L);
+        Long longSum = longs.stream().mapToLong(value -> value).sum();
+        System.out.println(longSum);
+
+        IntSummaryStatistics collect = list.stream().collect(Collectors.summarizingInt(value -> value));
+        System.out.println(collect);
+        System.out.println("统计集合元素的个数：" + collect.getCount());
+        System.out.println("集合元素累加之和：" + collect.getSum());
+        System.out.println("集合中最小值：" + collect.getMax());
+        System.out.println("集合中最大值：" + collect.getMin());
+        System.out.println("集合中平均值：" + collect.getAverage());
+    }
+
+    static class AmountObject {
+        private BigDecimal amount;
+        private int num;
+
+        public AmountObject(BigDecimal amount, int num) {
+            this.amount = amount;
+            this.num = num;
+        }
+
+        public BigDecimal getAmount() {
+            return amount;
+        }
     }
 
 }

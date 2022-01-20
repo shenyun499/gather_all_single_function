@@ -58,6 +58,12 @@ public class TestOptional {
     }
 
     @Test
+    public void test9() {
+        // 如果没值则抛出异常，否则正常返回，一般jpa 可以用到 生产者函数式
+        Optional.ofNullable("the value is exist").orElseThrow(() -> new RuntimeException("xx"));
+    }
+
+    @Test
     public void test5() {
         //get使用，打印
 //        String str = null;
@@ -139,9 +145,6 @@ public class TestOptional {
         if (!nameList.isEmpty()) {
             System.out.println(nameList);
         }
-
-
-
     }
 
 }

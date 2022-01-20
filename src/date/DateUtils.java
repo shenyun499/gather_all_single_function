@@ -135,4 +135,11 @@ public class DateUtils {
     public static LocalDateTime asLocalDateTime(Date date) {
         return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
+
+    /**
+     * LocalDateTime -> LocalDate
+      */
+    public static LocalDate asLocalDateTime(LocalDateTime localDateTime) {
+        return localDateTime.toLocalDate();
+    }
 }

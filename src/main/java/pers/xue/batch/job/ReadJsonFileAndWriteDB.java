@@ -31,7 +31,7 @@ public class ReadJsonFileAndWriteDB {
     }
 
     /**
-     * json 方式读取records，jpa方式写出
+     * json 方式读取records，自定义类写出db
      * @param stepBuilderFactory
      * @return
      */

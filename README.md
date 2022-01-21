@@ -68,6 +68,10 @@ pers.xue.batch.job.ReadDBAndWriteJsonFile class
 1、通过jpa repository指定方法和参数读取记录，这个过程是reader  
 2、通过JsonFileItemWriter指定bean 并自定义转换json的格式和指定写入path将文件写入，这个过程是writer  
 
+## 4、从json file读取记录，并写入db中
+pers.xue.batch.job.ReadJsonFileAndWriteDB class  
+通过JsonItemReader 读取，然后通过自定义的writer写入db（可以用Jpa/HibernateItemWriter, 但是个人认为自己实现）  
+
 # 三、测试类怎么写
 pers.xue.batch.job.ReadDBTest，参考ReadDBTest这个class  
 需要@RunWith(SpringRunner.class)和@ContextConfiguration(classes = { 配置class })或者@SpringBootTest，或者两者一起使用  

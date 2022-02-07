@@ -70,7 +70,16 @@ pers.xue.batch.job.ReadDBAndWriteJsonFile class
 
 ## 4、从json file读取记录，并写入db中
 pers.xue.batch.job.ReadJsonFileAndWriteDB class  
-通过JsonItemReader 读取，然后通过自定义的writer写入db（可以用Jpa/HibernateItemWriter, 但是个人认为自己实现）  
+通过JsonItemReader 读取，然后通过自定义的writer写入db（可以用Jpa/HibernateItemWriter, 但是个人认为自己实现）
+
+## 5、分发流，多个步骤step并行执行
+pers.xue.batch.job.SplitFlowExample
+https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#split-flows  
+
+
+## 6、顺序流，多个步骤顺序执行，前面失败后面都不会被执行
+https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#SequentialFlow  
+
 
 # 三、测试类怎么写
 pers.xue.batch.job.ReadDBTest，参考ReadDBTest这个class  

@@ -1,6 +1,5 @@
 package pers.xue.batch.job;
 
-import org.junit.jupiter.params.shadow.com.univocity.parsers.csv.CsvWriter;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -18,8 +17,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import pers.xue.batch.entity.CommonEntity;
 import pers.xue.batch.writer.CommonEntityItemWriter;
-
-import java.util.Arrays;
 
 /**
  * @author huangzhixue

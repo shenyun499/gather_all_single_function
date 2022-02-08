@@ -58,26 +58,29 @@ pers.xue.batch.job.ReadDB class
 通过jpa repository指定方法和参数读取记录，这个过程是reader
 两个仅仅是读取，没有做writer扩展功能  
 
-## 2、从db读取记录，然后写入txt 文件中
+## 2、repository 方式读写db
+pers.xue.batch.job.ReadDBAndWriteDBByRepository
+
+## 3、从db读取记录，然后写入txt 文件中
 pers.xue.batch.job.ReadDBAndWriteTxtFile class  
 1、通过jpa repository指定方法和参数读取记录，这个过程是reader  
 2、通过FlatFileItemWriter指定bean 并设置field name和写入path将文件写入，这个过程是writer  
 
-## 3、从db读取记录，然后写入json 文件中
+## 4、从db读取记录，然后写入json 文件中
 pers.xue.batch.job.ReadDBAndWriteJsonFile class  
 1、通过jpa repository指定方法和参数读取记录，这个过程是reader  
 2、通过JsonFileItemWriter指定bean 并自定义转换json的格式和指定写入path将文件写入，这个过程是writer  
 
-## 4、从json file读取记录，并写入db中
+## 5、从json file读取记录，并写入db中
 pers.xue.batch.job.ReadJsonFileAndWriteDB class  
 通过JsonItemReader 读取，然后通过自定义的writer写入db（可以用Jpa/HibernateItemWriter, 但是个人认为自己实现）
 
-## 5、分发流，多个步骤step并行执行
+## 6、分发流，多个步骤step并行执行
 pers.xue.batch.job.SplitFlowExample
 https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#split-flows  
 
 
-## 6、顺序流，多个步骤顺序执行，前面失败后面都不会被执行
+## 7、顺序流，多个步骤顺序执行，前面失败后面都不会被执行
 https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#SequentialFlow  
 
 

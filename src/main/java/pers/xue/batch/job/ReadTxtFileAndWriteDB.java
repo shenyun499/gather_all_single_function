@@ -1,19 +1,21 @@
 package pers.xue.batch.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
+import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ClassPathResource;
 import pers.xue.batch.entity.CommonEntity;
 import pers.xue.batch.writer.CommonEntityItemWriter;
@@ -33,9 +35,13 @@ import pers.xue.batch.writer.CommonEntityItemWriter;
  *
  * 字段映射成Object，官方介绍了三种方式
  * 1、通过索引，这样子比较简单，但是需要确保字段索引的位置，这样LineTokenizer，就可以配置为lineMapper.setLineTokenizer(new DelimitedLineTokenizer());
+ * Simple Delimited File Reading Example --- https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/readersAndWriters.html#simpleDelimitedFileReadingExample
  * 2、通过字段名称，但是需要配置LineTokenizer，tokenizer.setNames(new String[] {"id", "content"});
+ * Mapping Fields by Name --- https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/readersAndWriters.html#mappingFieldsByName
  * 3、通过注入bean，通过BeanWrapperFieldSetMapper去set注入需要解析的object bean名称
+ * Automapping FieldSets to Domain Objects ---- https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/readersAndWriters.html#beanWrapperFieldSetMapper
  */
+@Slf4j
 @Configuration
 public class ReadTxtFileAndWriteDB {
 
@@ -55,40 +61,121 @@ public class ReadTxtFileAndWriteDB {
     public Step readTxtFileAndWriteDBStep(StepBuilderFactory stepBuilderFactory) {
         return stepBuilderFactory.get("readTxtFileAndWriteDBStep")
                 .<CommonEntity, CommonEntity>chunk(1000)
-                .reader(readTxtFileItemReader())
+                .reader(objectReadTxtFileItemReader())
                 .writer(commonEntityItemWriter02())
                 .build();
     }
 
     @Bean
-    public ItemReader<CommonEntity> readTxtFileItemReader() {
-        FlatFileItemReader<CommonEntity> itemReader = new FlatFileItemReader<>();
-        itemReader.setResource(new ClassPathResource(generateFilePath));
-        DefaultLineMapper<CommonEntity> lineMapper = new DefaultLineMapper<>();
+    public ItemReader<CommonEntity> indexReadTxtFileItemReader() {
+        DefaultLineMapper<CommonEntity> defaultLineMapper = new DefaultLineMapper<>();
         // 默认的DelimitedLineTokenizer，分隔符delimiter为逗号','，引号包裹'"'。
-        DelimitedLineTokenizer delimitedLineTokenizer = new DelimitedLineTokenizer();
-        delimitedLineTokenizer.setQuoteCharacter('"');
-        lineMapper.setLineTokenizer(delimitedLineTokenizer);
-        lineMapper.setFieldSetMapper(new CommonEntitySetMapper());
-        itemReader.setLineMapper(lineMapper);
-        itemReader.open(new ExecutionContext());
-        // 定义文件的注释行 也就是 读取时 会忽略的内容, 可以用来过滤标题行
-        itemReader.setComments(new String[]{"id"});
-        return itemReader;
+        defaultLineMapper.setLineTokenizer(new DelimitedLineTokenizer());
+        defaultLineMapper.setFieldSetMapper(new IndexCommonEntitySetMapper());
+
+        return new FlatFileItemReaderBuilder<CommonEntity>()
+                .name("indexReadCsvFileAndWriteDBReader")
+                .resource(new ClassPathResource(generateFilePath))
+                // 跳过第一行，标题行
+                .linesToSkip(1)
+                // 定义文件的注释行 也就是 读取时 会忽略的内容, 可以用来过滤标题行
+                //.comments(new String[]{"id"})
+                .lineMapper(defaultLineMapper)
+                .build();
     }
 
-    protected static class CommonEntitySetMapper implements FieldSetMapper<CommonEntity> {
+    /**
+     * 索引映射
+     */
+    protected static class IndexCommonEntitySetMapper implements FieldSetMapper<CommonEntity> {
         @Override
         public CommonEntity mapFieldSet(FieldSet fieldSet) {
             return CommonEntity
                     .builder()
-                    // 可以用字段name（前提tokenizer.setNames(new String[] {"id", "content"});）,也可以用index(字段多index不好确定，不太建议, lineMapper.setLineTokenizer(new DelimitedLineTokenizer());)
-                    //.id(fieldSet.readInt("id"))
-                    //.content(fieldSet.readString("content"))
+                    // 用index(字段多index不好确定，不太建议, lineMapper.setLineTokenizer(new DelimitedLineTokenizer());)
                     .id(fieldSet.readInt(0))
                     .content(fieldSet.readString(1))
                     .build();
         }
+    }
+
+    @Bean
+    public ItemReader<CommonEntity> nameReadTxtFileItemReader() {
+        DefaultLineMapper<CommonEntity> defaultLineMapper = new DefaultLineMapper<>();
+        // 默认的DelimitedLineTokenizer，分隔符delimiter为逗号','，引号包裹'"'。
+        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
+        tokenizer.setNames("id", "content");
+        defaultLineMapper.setLineTokenizer(tokenizer);
+        // 读取后的字段与属性映射，set 值
+        defaultLineMapper.setFieldSetMapper(new NameCommonEntitySetMapper());
+
+        return new FlatFileItemReaderBuilder<CommonEntity>()
+                .name("nameReadTxtFileItemReader")
+                .resource(new ClassPathResource(generateFilePath))
+                // 跳过第一行，标题行
+                .linesToSkip(1)
+                // 定义文件的注释行 也就是 读取时 会忽略的内容, 可以用来过滤标题行
+                //.comments(new String[]{"id"})
+                .lineMapper(defaultLineMapper)
+                .build();
+    }
+
+    /**
+     * 字段名称映射
+     */
+    protected static class NameCommonEntitySetMapper implements FieldSetMapper<CommonEntity> {
+        @Override
+        public CommonEntity mapFieldSet(FieldSet fieldSet) {
+            log.info("line :{}", fieldSet.getFieldCount());
+            return CommonEntity
+                    .builder()
+                    // 用字段name（前提tokenizer.setNames(new String[] {"id", "content"});）
+                    .id(fieldSet.readInt("id"))
+                    .content(fieldSet.readString("content"))
+                    .build();
+        }
+    }
+
+    @Bean
+    public ItemReader<CommonEntity> objectReadTxtFileItemReader() {
+        DefaultLineMapper<CommonEntity> defaultLineMapper = new DefaultLineMapper<>();
+        // 默认的DelimitedLineTokenizer，分隔符delimiter为逗号','，引号包裹'"'。
+        DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
+        tokenizer.setNames("id", "content");
+        defaultLineMapper.setLineTokenizer(tokenizer);
+        // 读取后的字段与属性映射，set 值
+        // object 映射方式
+        defaultLineMapper.setFieldSetMapper(beanWrapperFieldSetMapper());
+
+        return new FlatFileItemReaderBuilder<CommonEntity>()
+                .name("objectReadTxtFileItemReader")
+                .resource(new ClassPathResource(generateFilePath))
+                // 跳过第一行，标题行
+                .linesToSkip(1)
+                // 定义文件的注释行 也就是 读取时 会忽略的内容, 可以用来过滤标题行
+                //.comments(new String[]{"id"})
+                .lineMapper(defaultLineMapper)
+                .build();
+    }
+
+    /**
+     * 试过不是通过bean的方式注入BeanWrapperFieldSetMapper，解析时竟然报错...
+     * @return
+     */
+    @Bean
+    public BeanWrapperFieldSetMapper beanWrapperFieldSetMapper() {
+        BeanWrapperFieldSetMapper fieldSetMapper = new BeanWrapperFieldSetMapper();
+        fieldSetMapper.setPrototypeBeanName("objectCommonEntitySetMapper");
+        return fieldSetMapper;
+    }
+
+    /**
+     * bean- object映射
+     */
+    @Bean
+    @Scope("prototype")
+    public CommonEntity  objectCommonEntitySetMapper() {
+        return new CommonEntity();
     }
 
     /**

@@ -36,8 +36,8 @@ retry(ConnectTimeoutException.class)：遇到异常(符合重试的异常)，重
 retryLimit(Integer)：允许重试的最大次数，超过这个数将结束重试执行程序。  
 skip与retry的区别：retry不能对reader抛出的异常进行retry，只能对process或者write抛出的异常进行retry；skip可以对reader或者process或者write抛出的异常进行skip。  
   
-taskExecutor(TaskExecutor): 配置一下线程，采用多线程方式运行  
-throttleLimit(Integer)：采用几个线程来处理，一般设置为core thread num  
+taskExecutor(TaskExecutor): 配置一下线程，采用多线程方式运行，这里的多线程指的是chunk多线程，比如chunk=100, 说明块大小为100，那么将开启多个线程分别处理块（单独的执行线程中读取，处理和写入每个块），而不是step  
+throttleLimit(Integer)：采用几个线程来处理，和taskExecutor配合使用，默认是4个，一般设置为core thread num  
 
 # 二、了解当前项目
 ## 当前项目配置
@@ -75,6 +75,22 @@ pers.xue.batch.job.ReadDBAndWriteJsonFile class
 pers.xue.batch.job.ReadJsonFileAndWriteDB class  
 通过JsonItemReader 读取，然后通过自定义的writer写入db（可以用Jpa/HibernateItemWriter, 但是个人认为自己实现）
 
+## 6、从txt file读取记录，并写入db中
+pers.xue.batch.job.ReadTxtFileAndWriteDB  
+读取文件有两部曲，第一是将文件内容读到缓冲，然后缓冲映射成实体类对象，这里要借助下面两个对象  
+DelimitedLineTokenizer: 与文件的映射读取  
+FieldSetMapper：已经读到值，这个是与对象的映射，将值填充到对象中  
+字段映射成Object，官方介绍了三种方式  
+1、通过索引，这样子比较简单，但是需要确保字段索引的位置，这样LineTokenizer，就可以配置为lineMapper.setLineTokenizer(new DelimitedLineTokenizer())  
+2、通过字段名称，但是需要配置LineTokenizer，tokenizer.setNames(new String[] {"id", "content"});  
+3、通过注入bean，通过BeanWrapperFieldSetMapper去set注入需要解析的object bean名称  
+官网对文件有两种解析，意思提供 固定分隔符/固定长度 解析file  
+默认的DelimitedLineTokenizer就是固定分隔符为逗号，是其它需要自己设定，如果不是分隔符，而是固定长度，那么需要使用tokenizer.setColumns(new Range[]{new Range(1,n), new Range(n, m)})  
+
+## 7、从csv file读取记录，通过processor处理，用repository方式写入db中
+pers.xue.batch.job.ReadCsvFileAndWriteDB  
+使用的是默认固定分隔符逗号，使用字段名称映射实现。  
+
 ## 6、分发流，多个步骤step并行执行
 pers.xue.batch.job.SplitFlowExample
 https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#split-flows  
@@ -82,6 +98,13 @@ https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#split-fl
 
 ## 7、顺序流，多个步骤顺序执行，前面失败后面都不会被执行
 https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#SequentialFlow  
+
+## 分区、
+https://www.jdon.com/springboot/spring-batch-partition.html  
+Multi-threaded Step ，chunk并发  
+Parallel Steps，多个Step并行处理  
+Partitioning，分区，一般是文件读取分区，一个区处理一个文件，比如一个目录有三个文件，同时处理就可以定义三个区  
+https://blog.csdn.net/TreeShu321/article/details/110679574  
 
 
 # 三、测试类怎么写

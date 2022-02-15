@@ -71,9 +71,16 @@ public class ReadDBAndWriteCsvFile {
                 .name("readDBAndWriterCsvFileItemWriter")
                 // 写出path
                 .resource(new FileSystemResource(generateFilePath))
-                // 允许追加写入
-                .append(true)
+                // 不允许追加写入（默认是false）
+                .append(false)
                 .lineAggregator(lineAggregator)
+                // 写入标题
+                .headerCallback(writer -> {
+                    writer.write("id,");
+                    writer.write("content");
+                })
+                // 写入结尾
+                //.footerCallback(writer -> {})
                 .build();
     }
 

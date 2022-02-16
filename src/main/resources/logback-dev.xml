@@ -23,21 +23,26 @@
         <!--定义日志输出的路径-->
         <!--这里的scheduler.manager.server.home 没有在上面的配置中设定，所以会使用java启动时配置的值-->
         <!--比如通过 java -Dscheduler.manager.server.home=/path/to XXXX 配置该属性-->
-        <file>${scheduler.manager.server.home}/logs/${app.name}.log</file>
+        <!-- 正常生成文件名称，如果遇到切割，将用下面定义的策略名称生成 -->
+        <file>${scheduler.manager.server.home}/logs/${app.name}.%d{yyyy-MM-dd}.log</file>
         <!--定义日志滚动的策略-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--定义文件滚动时的文件名的格式-->
-            <!--<fileNamePattern>${scheduler.manager.server.home}/logs/${app.name}.%d{yyyy-MM-dd.HH}.log.gz</fileNamePattern>-->
-            <fileNamePattern>${LOG_PATH}/ss.log</fileNamePattern>
-            <!--60天的时间周期，日志量最大20GB-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 定义文件滚动时的文件名的格式 下面开启的是按照小时的，注视的是按照当天个数%i 也可以 -->
+            <!--<fileNamePattern>${LOG_HOME}/consumer.%d{yyyy-MM-dd}.%i.log</fileNamePattern>-->
+            <fileNamePattern>${scheduler.manager.server.home}/logs/${app.name}.%d{yyyy-MM-dd.HH}.log.gz</fileNamePattern>
+            <!-- 每个日志文件最大100MB，超过100M将会分割文件 -->
+            <maxFileSize>100MB</maxFileSize>
+            <!--60天的时间周期，当超过这个天数的日志会被自动清理，需要开启cleanHistoryOnStart参数为true才会生效 -->
             <maxHistory>60</maxHistory>
-            <!-- 该属性在 1.1.6版本后 才开始支持-->
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <!-- 该属性在 1.1.6版本后 才开始支持 日志量最大20GB，即当日志达到20GB 将不会写日志-->
             <totalSizeCap>20GB</totalSizeCap>
         </rollingPolicy>
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <!--每个日志文件最大100MB-->
+        <!-- TimeBasedRollingPolicy + SizeBasedTriggeringPolicy配置 = SizeAndTimeBasedRollingPolicy -->
+        <!--<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            &lt;!&ndash; 每个日志文件最大100MB，超过100M将会分割文件 &ndash;&gt;
             <maxFileSize>100MB</maxFileSize>
-        </triggeringPolicy>
+        </triggeringPolicy>-->
         <!--定义输出格式-->
         <encoder>
             <pattern>%d [%thread] %-5level %logger{36} [%file : %line] - %msg%n</pattern>

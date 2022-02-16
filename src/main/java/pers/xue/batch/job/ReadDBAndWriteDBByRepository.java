@@ -75,6 +75,7 @@ public class ReadDBAndWriteDBByRepository {
     public RepositoryItemWriter<CommonEntity> readDBAndWriteDBByRepositoryWriter() {
         return new RepositoryItemWriterBuilder<CommonEntity>()
                 .repository(commonRepository)
+                // default method is saveAll
                 .methodName("save")
                 .build();
     }

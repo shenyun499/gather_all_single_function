@@ -59,12 +59,14 @@ pers.xue.batch.job.ReadDB class
 两个仅仅是读取，没有做writer扩展功能  
 
 ## 2、repository 方式读写db
-pers.xue.batch.job.ReadDBAndWriteDBByRepository
+pers.xue.batch.job.ReadDBAndWriteDBByRepository  
+如果writer不设置method，默认将会调用saveAll  
 
 ## 3、从db读取记录，然后写入txt 文件中
 pers.xue.batch.job.ReadDBAndWriteTxtFile class  
 1、通过jpa repository指定方法和参数读取记录，这个过程是reader  
 2、通过FlatFileItemWriter指定bean 并设置field name和写入path将文件写入，这个过程是writer  
+FlatFileItemWriter的headerCallback和footerCallback是写标题和结尾的  
 
 ## 4、从db读取记录，然后写入json 文件中
 pers.xue.batch.job.ReadDBAndWriteJsonFile class  
@@ -92,7 +94,7 @@ pers.xue.batch.job.ReadCsvFileAndWriteDB
 使用的是默认固定分隔符逗号，使用字段名称映射实现。  
 
 ## 6、分发流，多个步骤step并行执行
-pers.xue.batch.job.SplitFlowExample
+pers.xue.batch.job.SplitFlowExample  
 https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#split-flows  
 
 

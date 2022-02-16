@@ -29,7 +29,7 @@ spring:
 
 # 当前运行的job name
 job:
-  key: simpleDelimitedFileReadingExampleJob
+  key: readDBAndWriteCsvFileJob
 # readDBJob     通过序列器从db读取并经过普通的writer
 # readDBJob2    通过jpa repository从db读取并经过普通的writer(后面都用jpa repository)
 # readDBAndWriteJsonFileJob   从db读取并写入json文件

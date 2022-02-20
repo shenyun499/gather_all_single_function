@@ -29,7 +29,7 @@ spring:
 
 # 当前运行的job name
 job:
-  key: readDBAndWriteCsvFileJob
+  key: readDBByTaskletJob
 # readDBJob     通过序列器从db读取并经过普通的writer
 # readDBJob2    通过jpa repository从db读取并经过普通的writer(后面都用jpa repository)
 # readDBAndWriteJsonFileJob   从db读取并写入json文件
@@ -41,3 +41,4 @@ job:
 # splitFlowExampleJob         并发流，多个step并发执行
 # readDBAndWriteDBByRepositoryJob   repository 方式读写数据库
 # simpleDelimitedFileReadingExampleJob  官方对普通的读取csv文件 例子
+# readDBByTaskletJob           只进行读取，不写操作，使用tasklet

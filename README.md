@@ -91,21 +91,36 @@ FieldSetMapper：已经读到值，这个是与对象的映射，将值填充到
 
 ## 7、从csv file读取记录，通过processor处理，用repository方式写入db中
 pers.xue.batch.job.ReadCsvFileAndWriteDB  
-使用的是默认固定分隔符逗号，使用字段名称映射实现。  
+使用的是默认固定分隔符逗号，使用字段名称映射实现。 
 
-## 6、分发流，多个步骤step并行执行
+## 8、仅仅是读取db，不做写入操作 tasklet
+pers.xue.batch.job.ReadDBByTasklet  
+面向块的处理并不是在一个步骤中进行处理的唯一方法。如果Step必须包含一个简单的存储过程调用，该怎么办?  
+您可以将调用实现为ItemReader，并在过程完成后返回null。然而，这样做有点不自然，因为需要一个无操作的ItemWriter。  
+Spring Batch为这个场景提供了TaskletStep  
+
+## 9、根据sftp上传json file到服务器。根据sftp下载json file到服务器（代码已经自测，因为个人使用了腾讯云）
+pers.xue.batch.job.UploadAndDownloadJsonFileBySftp  
+
+10开始都是优化相关：  
+## 10、分发流，多个步骤step并行执行
 pers.xue.batch.job.SplitFlowExample  
 https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#split-flows  
 
-
-## 7、顺序流，多个步骤顺序执行，前面失败后面都不会被执行
+## 顺序流，多个步骤顺序执行，前面失败后面都不会被执行
 https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#SequentialFlow  
 
-## 分区、
+## 11、文件分区处理，读多个csv文件并插入数据库
+pers.xue.batch.job.PartitionMultiFile#partitionMultiFileJob  
+
+## 12、数据分区处理，将数据库的数据分区分页读取
+根据数据库总数量，平均分给多少个线程处理  
+
+## 分区
 https://www.jdon.com/springboot/spring-batch-partition.html  
-Multi-threaded Step ，chunk并发  
-Parallel Steps，多个Step并行处理  
-Partitioning，分区，一般是文件读取分区，一个区处理一个文件，比如一个目录有三个文件，同时处理就可以定义三个区  
+Multi-threaded Step ，chunk并发，一个step中对chunk进行并发读取  
+Parallel Steps，多个Step并行处理（也属于分区的一种方式）  
+Partitioning，分区，（数据分区、分区处理）一般是文件读取分区，一个区   处理一个文件，比如一个目录有三个文件，同时处理就可以定义三个区  
 https://blog.csdn.net/TreeShu321/article/details/110679574  
 
 

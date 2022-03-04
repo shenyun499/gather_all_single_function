@@ -38,6 +38,7 @@ skip与retry的区别：retry不能对reader抛出的异常进行retry，只能�
   
 taskExecutor(TaskExecutor): 配置一下线程，采用多线程方式运行，这里的多线程指的是chunk多线程，比如chunk=100, 说明块大小为100，那么将开启多个线程分别处理块（单独的执行线程中读取，处理和写入每个块），而不是step  
 throttleLimit(Integer)：采用几个线程来处理，和taskExecutor配合使用，默认是4个，一般设置为core thread num  
+chunk模式下，比如一个step要去读数据库所有的记录，数据库有100条记录，chunk=100,然后throttleLimit配置2，就会有两个线程随机读取数据库的记录，直至读完，两个线程读到的数据不一定都是50，反正加起来等于100，然后分成两个writer写入（本来一次的chunk=100，因为两个线程读了）  
 
 # 二、了解当前项目
 ## 当前项目配置
@@ -57,6 +58,7 @@ pers.xue.batch.job.ReadDB class
 2、readDBJob2  
 通过jpa repository指定方法和参数读取记录，这个过程是reader
 两个仅仅是读取，没有做writer扩展功能  
+repository：这个只支持分页读，并且默认pageSize是10，也就是会按照每页10条记录读一次，直到读完所有符合查询的记录  
 
 ## 2、repository 方式读写db
 pers.xue.batch.job.ReadDBAndWriteDBByRepository  

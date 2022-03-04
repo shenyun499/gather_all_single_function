@@ -7,4 +7,4 @@ server:
   port: 8080
 logging:
   level:
-    pers.xue.batch: warn
+    pers.xue.batch: info

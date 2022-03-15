@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * json操作
+ * fast json操作
  *
  * @author ：HUANG ZHI XUE
  * @date ：Create in 2020-09-02

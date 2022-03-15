@@ -114,6 +114,7 @@ https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#Sequenti
 
 ## 11、文件分区处理，读多个csv文件并插入数据库
 pers.xue.batch.job.PartitionMultiFile#partitionMultiFileJob  
+MultiResourceItemReader也可以实现，但是不是分区，是一个step读取多个file  
 
 ## 12、数据分区处理，将数据库的数据分区分页读取
 根据数据库总数量，平均分给多少个线程处理  

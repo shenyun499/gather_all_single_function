@@ -36,10 +36,6 @@ public class UploadJsonFileBySftpTasklet implements Tasklet {
         String uploadTime = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String filename = "test-" + uploadTime;
         DefaultSftpSessionFactory sftpFactory = new DefaultSftpSessionFactory(true);
-        sftpFactory.setHost("175.178.110.240");
-        sftpFactory.setPort(22);
-        sftpFactory.setUser("mysftp");
-        sftpFactory.setPassword("12345678");
         sftpFactory.setAllowUnknownKeys(true);
 
         SessionFactory<ChannelSftp.LsEntry> sessionFactory = new CachingSessionFactory<>(sftpFactory);

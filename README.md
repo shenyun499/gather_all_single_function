@@ -114,6 +114,8 @@ https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#Sequenti
 
 ## 11、文件分区处理，读多个csv文件并插入数据库
 pers.xue.batch.job.PartitionMultiFile#partitionMultiFileJob  
+如果前面都是通过各种的reader去读取文件，但是如果遇到resource不存在或者其它比较难处理，建议都是通过PartitionMultiFile来先读  
+这样Step有resource时才会处理，listener也会正常运行  
 MultiResourceItemReader也可以实现，但是不是分区，是一个step读取多个file  
 
 ## 12、数据分区处理，将数据库的数据分区分页读取

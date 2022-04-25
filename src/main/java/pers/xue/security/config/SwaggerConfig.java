@@ -1,4 +1,4 @@
-package pers.xue.boot_template.config;
+package pers.xue.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

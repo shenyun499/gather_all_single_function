@@ -1,4 +1,4 @@
-package pers.xue.boot_template.entity;
+package pers.xue.security.entity;
 
 import javax.persistence.*;
 

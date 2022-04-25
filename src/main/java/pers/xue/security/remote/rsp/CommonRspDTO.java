@@ -1,5 +1,8 @@
-package pers.xue.boot_template.remote.rsp;
+package pers.xue.security.remote.rsp;
 
+import lombok.Builder;
+
+@Builder
 public class CommonRspDTO {
     private Integer id;
 

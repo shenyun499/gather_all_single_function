@@ -1,4 +1,4 @@
-package pers.xue.boot_template.remote.req;
+package pers.xue.security.remote.req;
 
 
 import java.time.LocalDateTime;

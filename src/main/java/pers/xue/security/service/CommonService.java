@@ -1,13 +1,13 @@
-package pers.xue.boot_template.service;
+package pers.xue.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pers.xue.boot_template.entity.CommonEntity;
-import pers.xue.boot_template.repository.CommonRepository;
+import pers.xue.security.entity.CommonEntity;
+import pers.xue.security.repository.CommonRepository;
 
 /**
- * @auther huangzhixue
- * @data 2021/7/2 10:16 下午
+ * @author huangzhixue
+ * @date 2021/7/2 10:16 下午
  * @Description
  */
 @Service

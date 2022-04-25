@@ -1,4 +1,4 @@
-package pers.xue.boot_template;
+package pers.xue.security;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
 @EntityScan
-public class SpringBootTemplateApplication {
+public class SecurityOauth2Application {
     public static void main(String[] args) {
-        SpringApplication.run(SpringBootTemplateApplication.class, args);
+        SpringApplication.run(SecurityOauth2Application.class, args);
     }
 }

@@ -112,6 +112,13 @@ public class LambdaGrammer {
     @Test
     public void test7() {
         //需要，排序器实现
+        //不用lambda时实现正序排序
+        /*Comparator<Integer> com = new Comparator<Integer>() {
+            @Override
+            public int compare(Integer x, Integer y) {
+                return Integer.compare(x, y);
+            }
+        };*/
         Comparator<Integer> com = (x, y) -> Integer.compare(x, y);
         TreeSet<Integer> treeSet = new TreeSet<>(com);
         treeSet.addAll(Arrays.asList(6, 3, 2, 7, 1));

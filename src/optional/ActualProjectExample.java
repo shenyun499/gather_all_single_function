@@ -1,9 +1,6 @@
 package optional;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Optional;
 
@@ -112,6 +109,7 @@ public class ActualProjectExample {
     @Getter
     @Builder
     @NoArgsConstructor
+    @AllArgsConstructor
     static class User {
         private String name;
         private Address address;

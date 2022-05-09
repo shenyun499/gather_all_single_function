@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import pers.xue.batch.entity.CommonEntity;
+import pers.xue.batch.util.JsonUtil;
 import pers.xue.batch.writer.CommonEntityItemWriter;
 
 /**
@@ -47,6 +48,11 @@ public class ReadJsonFileAndWriteDB {
 
     @Bean
     public JsonItemReader<CommonEntity> jsonItemReader() {
+        // 如果CommonEntity里面遇到时间类型，那么 LocalDate/LocalDateTime那么在反序列化的时候会出现error
+        // 因为jdk1.8开始需要提供反序列化和序列化的方法，也就是设置ObjectMapper的Module，自定义这个ObjectMapper
+        // JacksonJsonObjectReader new出来后，设置一个他的ObjectMapper即可
+        /*JacksonJsonObjectReader<CommonEntity> jsonObjectReader = new JacksonJsonObjectReader<>(CommonEntity.class);
+        jsonObjectReader.setMapper(JsonUtil.getObjectMapper());*/
         return new JsonItemReaderBuilder<CommonEntity>()
                 .jsonObjectReader(new JacksonJsonObjectReader<>(CommonEntity.class))
                 .resource(new ClassPathResource(generateFilePath))

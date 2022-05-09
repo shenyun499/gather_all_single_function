@@ -11,6 +11,8 @@ import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import pers.xue.batch.entity.CommonEntity;
 import pers.xue.batch.listener.ReadDBListener;
@@ -20,10 +22,7 @@ import pers.xue.batch.remote.ReadDBBean;
 import pers.xue.batch.repository.CommonRepository;
 import pers.xue.batch.writer.ReadDBWriter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -97,7 +96,7 @@ public class ReadDB {
 
 
     @Bean
-    public Step readDBStep2(StepBuilderFactory stepBuilderFactory) {
+    public Step readDBStep2(StepBuilderFactory stepBuilderFactory, TaskExecutor taskExecutor) {
         return stepBuilderFactory.get("readDBStep2")
                 .<CommonEntity, ReadDBBean>chunk(5)
                 // 读取数据
@@ -106,8 +105,8 @@ public class ReadDB {
                 .processor(dBProcessor())
                 // 写入数据
                 .writer(dBItemWriter())
-                // 监听记录是否被读完
-                .listener(readDBListener)
+                .taskExecutor(taskExecutor)
+                .throttleLimit(2)
                 .build();
     }
 
@@ -119,13 +118,10 @@ public class ReadDB {
     public RepositoryItemReader<CommonEntity> dBItemReader2() {
         Map<String, Sort.Direction> map = new HashMap<>();
         map.put("id", Sort.Direction.DESC);
-        List<String> params = new ArrayList();
-        params.add("神韵学Spring Batch");
         RepositoryItemReader<CommonEntity> repositoryItemReader = new RepositoryItemReader<>();
         repositoryItemReader.setRepository(commonRepository);
-        repositoryItemReader.setPageSize(5);
         repositoryItemReader.setMethodName("findByContent");
-        repositoryItemReader.setArguments(params);
+        repositoryItemReader.setArguments(Arrays.asList("神韵学Spring Batch"));
         repositoryItemReader.setSort(map);
         return repositoryItemReader;
     }

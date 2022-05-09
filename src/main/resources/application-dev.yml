@@ -44,3 +44,5 @@ job:
 # readDBAndWriteDBByRepositoryJob   repository 方式读写数据库
 # simpleDelimitedFileReadingExampleJob  官方对普通的读取csv文件 例子
 # readDBByTaskletJob           只进行读取，不写操作，使用tasklet
+# uploadAndDownloadJsonFileBySftpJob    上传并下载json file 到服务器 tasklet
+# partitionMultiFileJob        分区进行读取，这里是对多个文件进行分区处理

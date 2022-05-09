@@ -38,6 +38,7 @@ skip与retry的区别：retry不能对reader抛出的异常进行retry，只能�
   
 taskExecutor(TaskExecutor): 配置一下线程，采用多线程方式运行，这里的多线程指的是chunk多线程，比如chunk=100, 说明块大小为100，那么将开启多个线程分别处理块（单独的执行线程中读取，处理和写入每个块），而不是step  
 throttleLimit(Integer)：采用几个线程来处理，和taskExecutor配合使用，默认是4个，一般设置为core thread num  
+chunk模式下，比如一个step要去读数据库所有的记录，数据库有100条记录，chunk=100,然后throttleLimit配置2，就会有两个线程随机读取数据库的记录，直至读完，两个线程读到的数据不一定都是50，反正加起来等于100，然后分成两个writer写入（本来一次的chunk=100，因为两个线程读了）  
 
 # 二、了解当前项目
 ## 当前项目配置
@@ -57,6 +58,7 @@ pers.xue.batch.job.ReadDB class
 2、readDBJob2  
 通过jpa repository指定方法和参数读取记录，这个过程是reader
 两个仅仅是读取，没有做writer扩展功能  
+repository：这个只支持分页读，并且默认pageSize是10，也就是会按照每页10条记录读一次，直到读完所有符合查询的记录  
 
 ## 2、repository 方式读写db
 pers.xue.batch.job.ReadDBAndWriteDBByRepository  
@@ -100,21 +102,39 @@ pers.xue.batch.job.ReadDBAndWriteDatFile.readDBAndWriteDatFileStep2
 
 ## 8、从csv file读取记录，通过processor处理，用repository方式写入db中
 pers.xue.batch.job.ReadCsvFileAndWriteDB  
-使用的是默认固定分隔符逗号，使用字段名称映射实现。  
+使用的是默认固定分隔符逗号，使用字段名称映射实现。 
 
-## 6、分发流，多个步骤step并行执行
+## 8、仅仅是读取db，不做写入操作 tasklet
+pers.xue.batch.job.ReadDBByTasklet  
+面向块的处理并不是在一个步骤中进行处理的唯一方法。如果Step必须包含一个简单的存储过程调用，该怎么办?  
+您可以将调用实现为ItemReader，并在过程完成后返回null。然而，这样做有点不自然，因为需要一个无操作的ItemWriter。  
+Spring Batch为这个场景提供了TaskletStep  
+
+## 9、根据sftp上传json file到服务器。根据sftp下载json file到服务器（代码已经自测，因为个人使用了腾讯云）
+pers.xue.batch.job.UploadAndDownloadJsonFileBySftp  
+
+10开始都是优化相关：  
+## 10、分发流，多个步骤step并行执行
 pers.xue.batch.job.SplitFlowExample  
 https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#split-flows  
 
-
-## 7、顺序流，多个步骤顺序执行，前面失败后面都不会被执行
+## 顺序流，多个步骤顺序执行，前面失败后面都不会被执行
 https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#SequentialFlow  
 
-## 分区、
+## 11、文件分区处理，读多个csv文件并插入数据库
+pers.xue.batch.job.PartitionMultiFile#partitionMultiFileJob  
+如果前面都是通过各种的reader去读取文件，但是如果遇到resource不存在或者其它比较难处理，建议都是通过PartitionMultiFile来先读  
+这样Step有resource时才会处理，listener也会正常运行  
+MultiResourceItemReader也可以实现，但是不是分区，是一个step读取多个file  
+
+## 12、数据分区处理，将数据库的数据分区分页读取
+根据数据库总数量，平均分给多少个线程处理  
+
+## 分区
 https://www.jdon.com/springboot/spring-batch-partition.html  
-Multi-threaded Step ，chunk并发  
-Parallel Steps，多个Step并行处理  
-Partitioning，分区，一般是文件读取分区，一个区处理一个文件，比如一个目录有三个文件，同时处理就可以定义三个区  
+Multi-threaded Step ，chunk并发，一个step中对chunk进行并发读取  
+Parallel Steps，多个Step并行处理（也属于分区的一种方式）  
+Partitioning，分区，（数据分区、分区处理）一般是文件读取分区，一个区   处理一个文件，比如一个目录有三个文件，同时处理就可以定义三个区  
 https://blog.csdn.net/TreeShu321/article/details/110679574  
 
 

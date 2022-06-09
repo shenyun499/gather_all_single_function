@@ -1,6 +1,6 @@
 package pers.xue.skills.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pers.xue.skills.entity.UnitTestEntity;
 
@@ -10,7 +10,7 @@ import pers.xue.skills.entity.UnitTestEntity;
  * @Description
  */
 @Repository
-public interface UnitTestRepository extends CrudRepository<UnitTestEntity, Integer> {
+public interface UnitTestRepository extends JpaRepository<UnitTestEntity, Integer> {
 
     UnitTestEntity findByContent(String content);
 }

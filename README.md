@@ -91,7 +91,16 @@ FieldSetMapper：已经读到值，这个是与对象的映射，将值填充到
 官网对文件有两种解析，意思提供 固定分隔符/固定长度 解析file  
 默认的DelimitedLineTokenizer就是固定分隔符为逗号，是其它需要自己设定，如果不是分隔符，而是固定长度，那么需要使用tokenizer.setColumns(new Range[]{new Range(1,n), new Range(n, m)})  
 
-## 7、从csv file读取记录，通过processor处理，用repository方式写入db中
+## 7、读取db读取记录，生成带header、tail的文件
+pers.xue.batch.job.ReadDBAndWriteDatFile.readDBAndWriteDatFileJob  
+使用|做分隔符，文件后缀为dat  
+header为header+当天日期，比如header20220509  
+tail为tail+记录数，比如tail200  
+tips: 如果这个需求在tasklet中来实现是最快的，直接读取全部，然后各种写入即可，我也提供了这种写法  
+pers.xue.batch.job.ReadDBAndWriteDatFile.readDBAndWriteDatFileStep2  
+
+
+## 8、从csv file读取记录，通过processor处理，用repository方式写入db中
 pers.xue.batch.job.ReadCsvFileAndWriteDB  
 使用的是默认固定分隔符逗号，使用字段名称映射实现。 
 

@@ -3,7 +3,6 @@ package pers.xue.batch.job;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.job.flow.FlowExecutionStatus;
@@ -15,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pers.xue.batch.decider.BatchJobDecider;
 import pers.xue.batch.decider.BatchJobDecider2;
+import pers.xue.batch.service.SendEmailByJavaEmailSenderService;
 
 /**
  * @author huangzhixue
@@ -47,6 +47,9 @@ public class DeciderUsage {
 
     @Autowired
     BatchJobDecider2 batchJobDecider2;
+
+    @Autowired
+    SendEmailByJavaEmailSenderService sendEmailByJavaEmailSenderService;
 
     @Bean
     public Job deciderUsageJob(JobBuilderFactory jobBuilderFactory) {
@@ -98,6 +101,7 @@ public class DeciderUsage {
     public Step firstDeciderStep3(StepBuilderFactory stepBuilderFactory) {
         return stepBuilderFactory.get("firstDeciderStep3")
                 .tasklet((stepContribution, chunkContext) -> {
+                    sendEmailByJavaEmailSenderService.sendEmailTest();
                     log.info("execute firstDeciderStep3 successfully");
                     return RepeatStatus.FINISHED;
                 }).build();

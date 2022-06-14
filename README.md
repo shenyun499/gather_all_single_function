@@ -104,31 +104,35 @@ pers.xue.batch.job.ReadDBAndWriteDatFile.readDBAndWriteDatFileStep2
 pers.xue.batch.job.ReadCsvFileAndWriteDB  
 使用的是默认固定分隔符逗号，使用字段名称映射实现。 
 
-## 8、仅仅是读取db，不做写入操作 tasklet
+## 9、仅仅是读取db，不做写入操作 tasklet
 pers.xue.batch.job.ReadDBByTasklet  
 面向块的处理并不是在一个步骤中进行处理的唯一方法。如果Step必须包含一个简单的存储过程调用，该怎么办?  
 您可以将调用实现为ItemReader，并在过程完成后返回null。然而，这样做有点不自然，因为需要一个无操作的ItemWriter。  
 Spring Batch为这个场景提供了TaskletStep  
 
-## 9、根据sftp上传json file到服务器。根据sftp下载json file到服务器（代码已经自测，因为个人使用了腾讯云）
+## 10、根据sftp上传json file到服务器。根据sftp下载json file到服务器（代码已经自测，因为个人使用了腾讯云）
 pers.xue.batch.job.UploadAndDownloadJsonFileBySftp  
 
 10开始都是优化相关：  
-## 10、分发流，多个步骤step并行执行
+## 11、分发流，多个步骤step并行执行
 pers.xue.batch.job.SplitFlowExample  
 https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#split-flows  
 
-## 顺序流，多个步骤顺序执行，前面失败后面都不会被执行
+## 12、顺序流，多个步骤顺序执行，前面失败后面都不会被执行
 https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/step.html#SequentialFlow  
 
-## 11、文件分区处理，读多个csv文件并插入数据库
+## 13、、文件分区处理，读多个csv文件并插入数据库
 pers.xue.batch.job.PartitionMultiFile#partitionMultiFileJob  
 如果前面都是通过各种的reader去读取文件，但是如果遇到resource不存在或者其它比较难处理，建议都是通过PartitionMultiFile来先读  
 这样Step有resource时才会处理，listener也会正常运行  
 MultiResourceItemReader也可以实现，但是不是分区，是一个step读取多个file  
 
-## 12、数据分区处理，将数据库的数据分区分页读取
+## 14、数据分区处理，将数据库的数据分区分页读取
 根据数据库总数量，平均分给多少个线程处理  
+
+## 15、条件判断
+可以根据条件判断下一个step是否需要继续执行  
+pers.xue.batch.job.DeciderUsage  
 
 ## 分区
 https://www.jdon.com/springboot/spring-batch-partition.html  

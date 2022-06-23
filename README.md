@@ -27,7 +27,10 @@ chunkSize(Integer)：指定块大小，当读到的次数等于块时，就会�
 说明块大小为1，读取itemreader1, 满足 1 的块大小要求，因此整个块被传递给 Writer，然后应计为1 个 commit（包装在一个事务中），然后做最终状态提交commit+1, 最终commit count=2.  
 
 incrementer(new RunIdIncrementer())：jobParameter 为null时，会重新建立一个，否则在原基础上加1  
-faultTolerant()：启用跳过skip功能/重试功能  
+faultTolerant()：启用跳过skip功能/重试功能 即开启容错机制 
+注意容错机制是将出现异常的记录排除出缓存，然后重新执行 
+比如有记录1234，chunkSize=4，即process要执行四次，skip在处理1完成，在处理2出现异常，会重新process 134的数据，其实就是将2移出内存，直到执行结束或者到达最大重试次数 
+所以可能出错，可以设置chunkSize=1,或者catch住异常，或者将不能重试的catch住 
 skip(excetion)：遇到异常(符合跳过的异常)，跳过处理，可以用系统指定的，也可以自定义.比如遇到数据校验异常跳过这个异常，skip(DataValidationException.class)  
 skipLimit(Integer)：允许跳过的最大次数，超过这个数将会导致整个执行失败  
 skipPolicy(Bean)：自定义跳过逻辑  

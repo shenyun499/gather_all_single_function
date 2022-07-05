@@ -137,6 +137,9 @@ MultiResourceItemReader也可以实现，但是不是分区，是一个step读�
 可以根据条件判断下一个step是否需要继续执行  
 pers.xue.batch.job.DeciderUsage  
 
+## 16、通过继承 tasklet 写多个不同的Object对象 json/file
+
+
 ## 分区
 https://www.jdon.com/springboot/spring-batch-partition.html  
 Multi-threaded Step ，chunk并发，一个step中对chunk进行并发读取  

@@ -29,7 +29,7 @@ public class GenerateMultipleFileTasklet implements Tasklet {
     @Autowired
     private CommonRepository commonRepository;
 
-    private String generateFilePath = "generate-data-tasklet.txt";
+    private String generateFilePath = "src/main/resources/files/generate-data-tasklet.txt";
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
@@ -62,7 +62,7 @@ public class GenerateMultipleFileTasklet implements Tasklet {
             tFlatFileItemWriter.open(stepContribution.getStepExecution().getExecutionContext());
             tFlatFileItemWriter.write(data);
         } catch (Exception e) {
-            log.error("generate file fail, path: {}", path);
+            log.error("generate file fail, path: {}", path, e);
         } finally {
             tFlatFileItemWriter.close();
         }

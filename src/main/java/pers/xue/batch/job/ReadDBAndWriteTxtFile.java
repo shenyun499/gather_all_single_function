@@ -32,7 +32,7 @@ import java.util.Map;
  *  (https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/readersAndWriters.html#SimplifiedFileWritingExample)
  *
  *  process:
- *      1、使用ClassPathResource 并将创建好的file放到classpath路径下没有反应
+ *      1、使用ClassPathResource 并将创建好的file放到classpath路径下没有反应(读取可以，但是写入失败，目前不知道具体原因）
  *      2、path写错了，使用FileSystemResource竟然不报错，因为它在相对路径下面创建了一个file并写入，
  *      我还以为FlatFileItemWriter必须要和FlatFileItemReader一起使用，后面更正了路径发现能写入
  */

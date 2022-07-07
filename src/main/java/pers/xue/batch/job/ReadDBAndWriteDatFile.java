@@ -33,7 +33,7 @@ import java.util.Collections;
  *  (https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/readersAndWriters.html#SimplifiedFileWritingExample)
  *
  *  process:
- *      1、使用ClassPathResource 并将创建好的file放到classpath路径下没有反应
+ *      1、使用ClassPathResource 并将创建好的file放到classpath路径下没有反应(读取可以，但是写入失败，目前不知道具体原因）
  *      2、path写错了，使用FileSystemResource竟然不报错，因为它在相对路径下面创建了一个file并写入，
  *      我还以为FlatFileItemWriter必须要和FlatFileItemReader一起使用，后面更正了路径发现能写入
  */
@@ -41,9 +41,9 @@ import java.util.Collections;
 public class ReadDBAndWriteDatFile {
 
     /**
-     * 目前使用相对路径，直接在项目名称下生成ABC_20220509.dat，也可以使用绝对路径，/Users/huangzhixue/IdeaProjects/gather_all_single_function/src/main/resources/ABC_20220509.dat
+     * 目前使用绝对路径，直接在项目路径files文件下生成ABC_20220509.dat，也可以使用绝对路径，/Users/huangzhixue/IdeaProjects/gather_all_single_function/src/main/resources/files/ABC_20220707.dat
      */
-    private String generateFilePath = "ABC_20220509.dat";
+    private String generateFilePath = "/Users/huangzhixue/IdeaProjects/gather_all_single_function/src/main/resources/files/ABC_20220707.dat";
 
     @Bean
     public Job readDBAndWriteDatFileJob(JobBuilderFactory jobBuilderFactory, Step readDBAndWriteDatFileStep) {

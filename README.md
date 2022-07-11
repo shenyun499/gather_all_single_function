@@ -132,7 +132,11 @@ pers.xue.batch.job.ReadMultiFormattedDatFile
 注意，这里的fieldSetMap用了三个，但是其中header和tail返回的null，仅仅是打印了log，而且用了多线程才不会结束只读一行记录
 不然只会读取一行记录，因为reader本不该返回null，如果返回null标志着结束，后面还有记录也不会进行读取，而是在processor中处理，所以用了多线程去读，这样同时读了1/2行或者更多，就不会结束了  
 
-## 9、以索引为下标生成txt文件，带header tail，1开头，比如1-3生成字段1， 4-5生成字段2  
+## 9、以索引为下标生成txt文件，带header tail，1开头，比如1-2生成字段1， 3-12生成字段2  
+pers.xue.batch.job.GenerateFixedWidthTxtFile  
+生成目标txt文件，带header和tail  
+id生成 1-2 即%-2s  
+content生成3-12  即%-10%
   
 ## 10、读取以索引为下标的txt文件，带header tail，1开头，比如1-3读取字段1， 4-5读取字段2
 

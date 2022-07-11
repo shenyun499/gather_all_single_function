@@ -84,6 +84,7 @@ public class PartitionMultiData {
     @Bean
     public PartitionHandler multiDataPartitionHandler(Step partitionSlaveMultiFileStep) {
         TaskExecutorPartitionHandler handler = new TaskExecutorPartitionHandler();
+        // 分区，两个区，这个是partition方法的gridSize, 在下面的MultiDataPartitioner类中
         handler.setGridSize(2);
         handler.setStep(partitionSlaveMultiFileStep);
         handler.setTaskExecutor(new SimpleAsyncTaskExecutor());

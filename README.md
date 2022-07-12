@@ -39,7 +39,9 @@ skipPolicy(Bean)：自定义跳过逻辑
 
 retry(ConnectTimeoutException.class)：遇到异常(符合重试的异常)，重新执行这个step  
 retryLimit(Integer)：允许重试的最大次数，超过这个数将结束重试执行程序。  
-skip与retry的区别：retry不能对reader抛出的异常进行retry，只能对process或者write抛出的异常进行retry；skip可以对reader或者process或者write抛出的异常进行skip。  
+skip与retry的区别：retry不能对reader抛出的异常进行retry，只能对process或者write抛出的异常进行retry；skip可以对reader或者process或者write抛出的异常进行skip。
+strict(boolean) - reader: 默认为true，表示资源不存在时抛出异常。如果设置为false，在reader时，读取的文件resource资源就算不存在，也会跳过继续走完处理  
+strict(boolean) - tokenizer : 默认为true， 设置为false则此设置告诉标记赋予器在对行进行标记时不要强制行长度，读取固定长度就算内存没达到长度也不会报错  
   
 taskExecutor(TaskExecutor): 配置一下线程，采用多线程方式运行，这里的多线程指的是chunk多线程，比如chunk=100, 说明块大小为100，那么将开启多个线程分别处理块（单独的执行线程中读取，处理和写入每个块），而不是step  
 throttleLimit(Integer)：采用几个线程来处理，和taskExecutor配合使用，默认是4个，一般设置为core thread num  
@@ -138,7 +140,11 @@ pers.xue.batch.job.GenerateFixedWidthTxtFile
 id生成 1-2 即%-2s  
 content生成3-12  即%-10%
   
-## 10、读取以索引为下标的txt文件，带header tail，1开头，比如1-3读取字段1， 4-5读取字段2
+## 10、读取以索引为下标的txt文件，带header tail，1开头，比如1-2读取字段1， 3-12读取字段2
+pers.xue.batch.job.ReadFixedWidthTxtFile  
+读取固定格式的txt文件读取header和tail行，但是需要没有填充值的对象，processor处理时跳过它  
+1-2 表示id  
+3-12表示content，如果内容长度没有达到，需要设置setStrict(false)，不然会抛出异常  
 
 ## 11、通过继承 tasklet 写多个不同的Object对象 json/file
 pers.xue.batch.job.GenerateMultiTxtFileByTasklet  

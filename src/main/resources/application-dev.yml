@@ -29,7 +29,7 @@ spring:
 
 # 当前运行的job name
 job:
-  key: generateFixedWidthTxtFileJob
+  key: readFixedWidthTxtFileJob
 # readDBJob     通过序列器从db读取并经过普通的writer
 # readDBJob2    通过jpa repository从db读取并经过普通的writer(后面都用jpa repository)
 # readDBAndWriteJsonFileJob   从db读取并写入json文件
@@ -49,4 +49,5 @@ job:
 # deciderUsageJob              根据条件控制后边的Job是否继续执行
 # generateMultiTxtFileByTaskletJob       可以生成多个json，根据不同的object
 # readMultiFormattedDatFileJob  读取多种格式的dat文件，之前都是一种格式
-# generateFixedWidthTxtFileJob  生成固定宽度字段的txt文件
+# generateFixedWidthTxtFileJob  生成固定宽度字段的txt文件，并且带header和tail
+# readFixedWidthTxtFileJob      读取固定宽度的txt文件，并且带header和tail

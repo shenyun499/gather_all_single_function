@@ -32,14 +32,12 @@ import java.util.Arrays;
 public class GenerateFixedWidthTxtFile {
     private JobBuilderFactory jobBuilderFactory;
     private StepBuilderFactory stepBuilderFactory;
-    private CommonRepository commonRepository;
     private int count;
     private String generateFilePath = "src/main/resources/files/fixed_width.txt";
 
-    public GenerateFixedWidthTxtFile(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory, CommonRepository commonRepository) {
+    public GenerateFixedWidthTxtFile(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory) {
         this.jobBuilderFactory = jobBuilderFactory;
         this.stepBuilderFactory = stepBuilderFactory;
-        this.commonRepository = commonRepository;
     }
 
     @Bean

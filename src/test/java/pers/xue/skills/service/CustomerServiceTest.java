@@ -4,17 +4,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import pers.xue.skills.entity.Customer;
-import pers.xue.skills.repository.CustomerRepository;
 
-import static org.mockito.Mockito.*;
+import javax.sql.DataSource;
 
 /**
  * @author huangzhixue
@@ -26,7 +25,20 @@ import static org.mockito.Mockito.*;
 @ActiveProfiles("test")
 public class CustomerServiceTest {
     @Autowired
+    private ApplicationContext applicationContext;
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
     CustomerService customerService;
+
+    @Before
+    public void init() {
+        ResourceDatabasePopulator populator =
+                new ResourceDatabasePopulator(applicationContext.getResource("classpath:sql/other.sql"));
+        DatabasePopulatorUtils.execute(populator, dataSource);
+    }
 
     @Test
     public void testGetCustomer() {

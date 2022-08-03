@@ -1,7 +1,4 @@
 spring:
-  h2:
-    console:
-      enabled: true
   #不存在会自动创建/包括库、表等
   jpa:
     hibernate:
@@ -22,3 +19,4 @@ spring:
   sql:
     init:
       data-locations: classpath:sql/boot_backend_init.sql
+#      separator: ;

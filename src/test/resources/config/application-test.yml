@@ -1,0 +1,24 @@
+spring:
+  h2:
+    console:
+      enabled: true
+  #不存在会自动创建/包括库、表等
+  jpa:
+    hibernate:
+      #测试时每次删掉
+      ddl-auto: create-drop
+      naming:
+        #对表字段采用驼峰命名方式，取消默认的下划线命名(默认，SpringPhysicalNamingStrategy：表名，字段为小写，当有大写字母的时候会添加下划线分隔符号)
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate:
+        #防止懒加载
+        enable_lazy_load_no_trans: true
+        dialect: org.hibernate.dialect.H2Dialect
+    #配置ture，JPA自动建表会在执行sql文件之前，否则会报找不到table
+    defer-datasource-initialization: true
+  sql:
+    init:
+      data-locations: classpath:sql/boot_backend_init.sql

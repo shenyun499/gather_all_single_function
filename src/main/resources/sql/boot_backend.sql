@@ -1,0 +1,1 @@
+insert into case(id,status,name,content,version) values(1, 'new', 'shenyun', 'spring machine test',1);

@@ -19,4 +19,3 @@ spring:
   sql:
     init:
       data-locations: classpath:sql/boot_backend_init.sql
-#      separator: ;

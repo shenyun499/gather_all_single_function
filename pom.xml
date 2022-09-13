@@ -30,12 +30,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>3.9.0</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
@@ -44,83 +38,22 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <version>1.4.197</version>
-      <scope>test</scope>
+    </dependency>
+
+    <!-- cucumber -->
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>6.8.0</version>
     </dependency>
 
     <dependency>
-      <groupId>org.junit.vintage</groupId>
-      <artifactId>junit-vintage-engine</artifactId>
-      <scope>test</scope>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-junit</artifactId>
+      <version>6.8.0</version>
     </dependency>
+
 
   </dependencies>
 
-  <!-- h2 -->
-  <profiles>
-    <profile>
-      <id>dev</id>
-      <properties>
-        <profile>dev</profile>
-      </properties>
-      <dependencies>
-        <dependency>
-          <groupId>com.h2database</groupId>
-          <artifactId>h2</artifactId>
-          <version>1.4.197</version>
-          <scope>runtime</scope>
-        </dependency>
-      </dependencies>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-    </profile>
-  </profiles>
-
-  <build>
-    <finalName>unit test</finalName>
-    <plugins>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.5</version>
-        <configuration>
-          <excludes>
-            <!-- 不参与unit test -->
-            <exclude>**/*App*</exclude>
-            <exclude>**/jackson/**</exclude>
-            <exclude>**/remote/**</exclude>
-            <exclude>**/entity/**</exclude>
-          </excludes>
-        </configuration>
-
-        <!-- 配置路径，生成report等-->
-        <executions>
-          <execution>
-            <id>prepare-agent</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>report</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>post-unit-test</id>
-            <phase>test</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-            <configuration>
-              <dataFile>target/jacoco.exec</dataFile>
-              <outputDirectory>target/jacoco-ut</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>

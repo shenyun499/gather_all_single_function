@@ -17,5 +17,7 @@ import org.junit.runner.RunWith;
         glue = "pers.xue.skills"
 //        tags = "@CucumberTest"
 )
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class CucumberTest {
 }

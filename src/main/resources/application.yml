@@ -1,5 +1,10 @@
 spring:
   profiles:
     active: dev
+  main:
+    banner-mode: off
 server:
   port: 8080
+
+name:
+  password shenyun20220907

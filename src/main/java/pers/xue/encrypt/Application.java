@@ -1,4 +1,4 @@
-package pers.xue.boot_template;
+package pers.xue.encrypt;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
 @EntityScan
-public class SpringBootTemplateApplication {
+public class Application {
     public static void main(String[] args) {
-        SpringApplication.run(SpringBootTemplateApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }

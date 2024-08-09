@@ -87,7 +87,7 @@ public class ThreadInterupt {
                     Thread.sleep(1000L);
                 } catch (InterruptedException e) {
                     // 线程阻塞的时候，抛出InterruptedException中断线程，isInterrupted=false;
-                    // 清理资源--出队等
+                    // 清理资源--出队等 ReentrantLock 是在final 里面做的出队操作，具体可以看 cancelAcquire方法
                     e.printStackTrace();
                     return;
                 }

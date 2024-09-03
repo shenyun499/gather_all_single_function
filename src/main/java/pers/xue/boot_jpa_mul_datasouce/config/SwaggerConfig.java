@@ -1,4 +1,4 @@
-package pers.xue.boot_template.config;
+package pers.xue.boot_jpa_mul_datasouce.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

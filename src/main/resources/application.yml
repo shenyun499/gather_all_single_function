@@ -1,7 +1,19 @@
 spring:
-  profiles:
-    active: dev
-  main:
-    banner-mode: off
-server:
-  port: 8080
+  jpa:
+    database: mysql
+    show-sql: true
+
+  datasource:
+    #主数据源 , 写入数据库
+    primary:
+      url: jdbc:mysql://localhost:3306/primary_db?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8?useSSL=true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: root
+
+    # 次数据源 , 读取数据库
+    secondary:
+      url: jdbc:mysql://localhost:3306/secondary_db?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8?useSSL=true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: root

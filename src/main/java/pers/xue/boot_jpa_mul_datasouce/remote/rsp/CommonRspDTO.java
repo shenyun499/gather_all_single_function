@@ -1,6 +1,14 @@
-package pers.xue.boot_template.remote.rsp;
+package pers.xue.boot_jpa_mul_datasouce.remote.rsp;
 
 public class CommonRspDTO {
+
+    public CommonRspDTO(String content) {
+        this.content = content;
+    }
+
+    public CommonRspDTO() {
+    }
+
     private Integer id;
 
     private String content;

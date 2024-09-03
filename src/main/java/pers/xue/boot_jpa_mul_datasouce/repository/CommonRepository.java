@@ -1,8 +1,8 @@
-package pers.xue.boot_template.repository;
+package pers.xue.boot_jpa_mul_datasouce.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import pers.xue.boot_template.entity.CommonEntity;
+import pers.xue.boot_jpa_mul_datasouce.entity.CommonEntity;
 
 /**
  * @auther huangzhixue

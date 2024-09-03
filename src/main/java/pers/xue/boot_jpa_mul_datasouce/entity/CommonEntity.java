@@ -1,4 +1,4 @@
-package pers.xue.boot_template.entity;
+package pers.xue.boot_jpa_mul_datasouce.entity;
 
 import javax.persistence.*;
 

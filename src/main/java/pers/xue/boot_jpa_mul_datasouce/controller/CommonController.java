@@ -1,13 +1,13 @@
-package pers.xue.boot_template.controller;
+package pers.xue.boot_jpa_mul_datasouce.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pers.xue.boot_template.remote.req.CommonReqDTO;
-import pers.xue.boot_template.remote.rsp.CommonRspDTO;
-import pers.xue.boot_template.service.CommonService;
+import pers.xue.boot_jpa_mul_datasouce.remote.req.CommonReqDTO;
+import pers.xue.boot_jpa_mul_datasouce.remote.rsp.CommonRspDTO;
+import pers.xue.boot_jpa_mul_datasouce.service.CommonService;
 
 /**
  * @auther huangzhixue
@@ -21,7 +21,7 @@ public class CommonController {
 
     @PostMapping("/testJpa")
     public CommonRspDTO unitTest(@RequestBody CommonReqDTO commonReqDTO) throws JsonProcessingException {
-        return null;
+        return new CommonRspDTO(commonService.queryUnitTestByContent(commonReqDTO.getContent()).getContent());
     }
 
 }

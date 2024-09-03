@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
  * 自定义类加载器
  * 场景：
  * 我们可以对 Java 类的字节码（ .class 文件）进行加密，加载时再利用自定义的类加载器对其解密。
+ * 要加载的类必须要不在classpath下面，不然自定义类加载器无法加载，因为这个类是在classpath下，所以还是由应用加载器进行加载
  *
  * 需要继承ClassLoader
  * 1、实现findClass接口，并且在里面定义加载类资源的逻辑
@@ -61,6 +62,9 @@ public class MyClassLoader extends ClassLoader {
      */
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
+        if (name.startsWith("java.lang.")) {
+            return super.loadClass(name);
+        }
         // 我现在重写了loadClass方法，并把原来源码中的双亲委派机制代码那点代码去掉了（就判断parent是否为空，自己调自己的loadClass方法的那点源码）
         byte[] data = null;
         try {
@@ -81,13 +85,20 @@ public class MyClassLoader extends ClassLoader {
 
     public static void main(String[] args) throws ClassNotFoundException {
         MyClassLoader myClassLoader = new MyClassLoader();
-//        myClassLoader.setBasePath("/Users/huangzhixue/IdeaProjects/gather_all_single_function/target/classes/");
-//        myClassLoader.loadClass("com.Test.Interrupt");
+        myClassLoader.setBasePath("/Users/huangzhixue/IdeaProjects/gather_Øall_single_function/target/classes/");
+        myClassLoader.setBasePath("/Users/huangzhixue/IdeaProjects/gather_all_single_function/load/");
+        Class<?> aClass = myClassLoader.loadClass("com.loadClass.TestLoadClass");
+        System.out.println(aClass.getClassLoader());
         System.out.println(myClassLoader);
         System.out.println(myClassLoader.getParent());
         MyClassLoader2 myClassLoader2 = new MyClassLoader2();
-        myClassLoader2.setBasePath("/Users/huangzhixue/IdeaProjects/gather_all_single_function/target/classes/");
-        myClassLoader2.loadClass("com.Test.Interrupt");
+//        myClassLoader2.setBasePath("/Users/huangzhixue/IdeaProjects/gather_all_single_function/target/classes/");
+//        Class<?> aClass1 = myClassLoader2.loadClass("com.Test.Interrupt");
+//        System.out.println("发现Interrupt还是由应用加载器加载，因为它在classpath路径下" + aClass1.getClassLoader());
+//        System.out.println(myClassLoader2);
+        myClassLoader2.setBasePath("/Users/huangzhixue/IdeaProjects/gather_all_single_function/load/");
+        Class<?> aClass1 = myClassLoader2.loadClass("com.loadClass.TestLoadClass");
+        System.out.println("TestLoadClass不在classpath路径下，由自定义类加载器加载" + aClass1.getClassLoader());
         System.out.println(myClassLoader2);
         System.out.println(myClassLoader2.getParent());
         System.out.println(myClassLoader2.getParent().getParent());
